@@ -4,14 +4,14 @@
 
 ## Application :tada:
 
-## Testing
+## Testing :test_tube:
 
-### Unit Tests :test_tube:
+### Unit Tests
 
 Let's use the `Arrange, Act, Assert` pattern for unit tests.
 
 
-### Integration Tests :test_tube: 
+### Integration Tests 
 
 Let's use the `Given, When, Then` pattern (behavioural driven) for integration tests.
 

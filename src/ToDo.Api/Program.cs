@@ -1,0 +1,22 @@
+using FluentValidation;
+using ToDo.Api;
+using ToDo.Api.Infrastructure.DataAccess;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddValidatorsFromAssemblyContaining<ToDo.Api.Program>();
+Bootstrapper.RegisterDataAccessDependencies(builder.Services, builder.Configuration);
+
+
+var app = builder.Build();
+
+app.UseHttpsRedirection();
+
+app.RegisterTodoRoutes();
+
+app.Run();
+
+namespace ToDo.Api
+{
+    public class Program;
+}

@@ -6,7 +6,7 @@ Content-Type: application/json
 {
   "title": "Pay bills",
   "description": "Pay all the utility bills",
-  "dueDate": "2024-05-03T00:00:00"
+  "dueDate": "2024-06-10T00:00:00"
 }
 
 ###

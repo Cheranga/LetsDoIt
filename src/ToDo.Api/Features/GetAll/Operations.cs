@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +10,6 @@ namespace ToDo.Api.Features.GetAll;
 
 internal static class Operations
 {
-    private static readonly string CacheKey = $"{typeof(Operations).FullName}-AllTasks";
-
     public static async ValueTask<Results<ProblemHttpResult, NoContent, Ok<TodoListResponse>>> ExecuteAsync(
         [FromServices] IDistributedCache cache,
         [FromServices] IQueryHandler<SearchAllQuery, List<TodoDataModel>> queryHandler,
@@ -22,30 +19,21 @@ internal static class Operations
     {
         try
         {
-            var rawData = await cache.GetAsync(CacheKey, token);
-            if (rawData != null)
+            var tasks = await queryHandler.QueryAsync(new SearchAllQuery(), token) ?? new List<TodoDataModel>();
+            if (!tasks.Any())
             {
-                using var memoryStream = new MemoryStream(rawData);
-                var response = (await JsonSerializer.DeserializeAsync<TodoListResponse>(memoryStream, cancellationToken: token))!;
-                return response.Tasks.Any() ? TypedResults.Ok(response) : TypedResults.NoContent();
+                return TypedResults.NoContent();
             }
 
-            var results = await queryHandler.QueryAsync(new SearchAllQuery(), token) ?? new List<TodoDataModel>();
-            var todoListResponse = new TodoListResponse
+            await CacheTasks(cache, tasks, token);
+
+            return TypedResults.Ok(new TodoListResponse
             {
                 Tasks =
                 [
-                    ..results.Select(x => new TodoResponse(x.Id, x.Title, x.Description, x.DueDate)).ToList()
+                    ..tasks.Select(x => new TodoResponse(x.Id, x.Title, x.Description, x.DueDate)).ToList()
                 ]
-            };
-
-            await cache.SetAsync(
-                CacheKey,
-                Encoding.UTF8.GetBytes(JsonSerializer.Serialize(todoListResponse)),
-                new DistributedCacheEntryOptions {AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30)},
-                token
-            );
-            return todoListResponse.Tasks.Any() ? TypedResults.Ok(todoListResponse) : TypedResults.NoContent();
+            });
         }
         catch (Exception exception)
         {
@@ -55,10 +43,20 @@ internal static class Operations
         return TypedResults.Problem(
             new ProblemDetails
             {
-                Status = (int) HttpStatusCode.InternalServerError,
+                Status = (int)HttpStatusCode.InternalServerError,
                 Title = "Get all tasks",
                 Detail = "error occurred when getting all tasks"
             }
         );
+    }
+
+    private static async ValueTask CacheTasks(IDistributedCache cache, List<TodoDataModel> tasks, CancellationToken token)
+    {
+        using var stream = new MemoryStream();
+        await JsonSerializer.SerializeAsync(stream, tasks, Constants.SerializerOptions, token);
+        stream.Position = 0;
+        using var reader = new BinaryReader(stream);
+        var bytes = reader.ReadBytes((int)stream.Length);
+        await cache.SetAsync(Constants.CacheKey, bytes, Constants.CacheOptions, token);
     }
 }

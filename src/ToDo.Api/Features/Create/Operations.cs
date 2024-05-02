@@ -37,7 +37,7 @@ internal static class Operations
         return TypedResults.Problem(
             new ProblemDetails
             {
-                Status = (int) HttpStatusCode.InternalServerError,
+                Status = (int)HttpStatusCode.InternalServerError,
                 Title = "Error when adding task",
                 Detail = "error occurred when adding a task"
             }

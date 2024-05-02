@@ -1,7 +1,8 @@
-﻿using System.Collections.ObjectModel;
-using System.Net;
+﻿using System.Net;
+using System.Text.Json;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using ToDo.Api.Features.SearchById;
 using ToDo.Api.Infrastructure.DataAccess;
 
@@ -9,18 +10,8 @@ namespace ToDo.Api.Features.GetAll;
 
 internal static class Operations
 {
-    private static Results<ProblemHttpResult, NoContent, Ok<TodoListResponse>> ToResponse(this List<TodoDataModel> todos) =>
-        todos.Any()
-            ? TypedResults.Ok(
-                new TodoListResponse(
-                    new ReadOnlyCollection<TodoResponse>(
-                        todos.Select(x => new TodoResponse(x.Id, x.Title, x.Description, x.DueDate)).ToList()
-                    )
-                )
-            )
-            : TypedResults.NoContent();
-
     public static async ValueTask<Results<ProblemHttpResult, NoContent, Ok<TodoListResponse>>> ExecuteAsync(
+        [FromServices] IDistributedCache cache,
         [FromServices] IQueryHandler<SearchAllQuery, List<TodoDataModel>> queryHandler,
         [FromServices] ILogger<Program> logger,
         CancellationToken token = new()
@@ -28,8 +19,21 @@ internal static class Operations
     {
         try
         {
-            var results = await queryHandler.QueryAsync(new SearchAllQuery(), token);
-            return (results ?? new List<TodoDataModel>()).ToResponse();
+            var tasks = await queryHandler.QueryAsync(new SearchAllQuery(), token) ?? new List<TodoDataModel>();
+            if (!tasks.Any())
+            {
+                return TypedResults.NoContent();
+            }
+
+            await CacheTasks(cache, tasks, token);
+
+            return TypedResults.Ok(new TodoListResponse
+            {
+                Tasks =
+                [
+                    ..tasks.Select(x => new TodoResponse(x.Id, x.Title, x.Description, x.DueDate)).ToList()
+                ]
+            });
         }
         catch (Exception exception)
         {
@@ -39,10 +43,20 @@ internal static class Operations
         return TypedResults.Problem(
             new ProblemDetails
             {
-                Status = (int) HttpStatusCode.InternalServerError,
+                Status = (int)HttpStatusCode.InternalServerError,
                 Title = "Get all tasks",
                 Detail = "error occurred when getting all tasks"
             }
         );
+    }
+
+    private static async ValueTask CacheTasks(IDistributedCache cache, List<TodoDataModel> tasks, CancellationToken token)
+    {
+        using var stream = new MemoryStream();
+        await JsonSerializer.SerializeAsync(stream, tasks, Constants.SerializerOptions, token);
+        stream.Position = 0;
+        using var reader = new BinaryReader(stream);
+        var bytes = reader.ReadBytes((int)stream.Length);
+        await cache.SetAsync(Constants.CacheKey, bytes, Constants.CacheOptions, token);
     }
 }

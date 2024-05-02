@@ -9,8 +9,8 @@ public record SearchAllQuery : IQuery
     {
         public async ValueTask<List<TodoDataModel>?> QueryAsync(SearchAllQuery query, CancellationToken token)
         {
-            var todos = await Context.Todos.AsNoTracking().ToListAsync(token);
-            return todos;
+            var tasks = await Context.Todos.ToListAsync(token);
+            return tasks;
         }
     }
 }

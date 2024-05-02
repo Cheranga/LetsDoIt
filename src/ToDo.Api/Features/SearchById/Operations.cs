@@ -33,7 +33,7 @@ internal static class Operations
         return TypedResults.Problem(
             new ProblemDetails
             {
-                Status = (int) HttpStatusCode.InternalServerError,
+                Status = (int)HttpStatusCode.InternalServerError,
                 Title = "Search by Id",
                 Detail = "error occurred when searching task by id"
             }

@@ -20,8 +20,6 @@ public class ValidateTodoFilterTests : IClassFixture<WebApplicationFactory<Progr
         _client = factory.CreateClient();
     }
 
-    private const string BaseUrl = "/todos";
-
     [Fact(DisplayName = "Invalid task must return bad request status code")]
     public async Task InvalidTask()
     {
@@ -30,7 +28,7 @@ public class ValidateTodoFilterTests : IClassFixture<WebApplicationFactory<Progr
                 var task = new Fixture().Build<AddTodoDto>()
                     .Without(x=>x.Title)
                     .Create();
-                var request = new HttpRequestMessage(HttpMethod.Post, $"{_client.BaseAddress}todos") { Content = JsonContent.Create(task) };
+                var request = new HttpRequestMessage(HttpMethod.Post, "/todos") { Content = JsonContent.Create(task) };
                 return request;
             })
             .Act(async request =>
@@ -47,10 +45,9 @@ public class ValidateTodoFilterTests : IClassFixture<WebApplicationFactory<Progr
                     await response.Content.ReadAsStreamAsync()
                 );
                 problemResponse.Should().NotBeNull();
-                problemResponse.Extensions.TryGetValue("errors", out var error).Should().BeTrue();
-                error.ToString().Should().Contain("Title cannot be empty");
-                
-                problemResponse.Should().NotBeNull();
+                problemResponse!.Errors.TryGetValue("Title", out var errorMessage).Should().BeTrue();
+                errorMessage.Should().NotBeNullOrEmpty();
+                errorMessage!.First().Should().Contain("Title cannot be empty");
             });
     }
     

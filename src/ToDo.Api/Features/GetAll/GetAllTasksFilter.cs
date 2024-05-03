@@ -22,7 +22,13 @@ internal class GetAllTasksFilter(IDistributedCache cache) : IEndpointFilter
             {
                 Tasks =
                 [
-                    ..tasks.Select(x => new TodoResponse(x.Id, x.Title, x.Description, x.DueDate)).ToList()
+                    ..tasks.Select(x => new TodoResponse
+                    {
+                        Id = x.Id,
+                        Title = x.Title,
+                        Description = x.Description,
+                        DueDate = x.DueDate
+                    }).ToList()
                 ]
             });
 

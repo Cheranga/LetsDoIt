@@ -1,8 +1,8 @@
 ﻿namespace ToDo.Api.Infrastructure.DataAccess;
 
-internal interface IQuery;
+public interface IQuery;
 
-internal interface IQueryHandler<in TQuery, TResponse>
+public  interface IQueryHandler<in TQuery, TResponse>
     where TQuery : IQuery
     where TResponse : class
 {

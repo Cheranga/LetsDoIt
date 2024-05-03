@@ -1,11 +1,15 @@
-﻿using ToDo.Api.Infrastructure.DataAccess;
+﻿using System.Diagnostics.CodeAnalysis;
+using ToDo.Api.Infrastructure.DataAccess;
 
 namespace ToDo.Api.Features.Create;
+
+[ExcludeFromCodeCoverage(Justification = "Tested via integration tests")]
 
 public record CreateToDoCommand(string Title, string Description, DateTimeOffset DueDate) : ICommand
 {
     private string Id => Guid.NewGuid().ToString("N").ToUpper();
 
+    [ExcludeFromCodeCoverage(Justification = "Tested via integration tests")]
     internal record Handler(TodoDbContext Context) : ICommandHandler<CreateToDoCommand>
     {
         public async ValueTask<string> ExecuteAsync(CreateToDoCommand command, CancellationToken token = new())

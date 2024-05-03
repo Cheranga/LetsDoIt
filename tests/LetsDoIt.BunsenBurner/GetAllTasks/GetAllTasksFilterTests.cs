@@ -17,18 +17,14 @@ using static BunsenBurner.Aaa;
 
 namespace LetsDoIt.BunsenBurner.GetAllTasks;
 
-public class GetAllTasksFilterTests : IClassFixture<WebApplicationFactory<Program>>
+public class GetAllTasksFilterTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
 {
-    private readonly WebApplicationFactory<Program> _factory;
-
-    public GetAllTasksFilterTests(WebApplicationFactory<Program> factory) => _factory = factory;
-
     [Fact]
     public async Task GetAllTasksWhenCached()
     {
         await Arrange(() =>
             {
-                return _factory
+                return factory
                     .WithWebHostBuilder(builder =>
                     {
                         builder.ConfigureTestServices(services =>
@@ -49,7 +45,7 @@ public class GetAllTasksFilterTests : IClassFixture<WebApplicationFactory<Progra
                             var mockedCache = new Mock<IDistributedCache>();
                             mockedCache
                                 .SetupSequence(x => x.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                                .ReturnsAsync((byte[])null)
+                                .ReturnsAsync([])
                                 .ReturnsAsync(JsonSerializer.SerializeToUtf8Bytes(tasks, Constants.SerializerOptions));
 
                             services.AddSingleton(mockedCache.Object);

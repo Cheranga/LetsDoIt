@@ -11,7 +11,7 @@ internal class GetAllTasksFilter(IDistributedCache cache) : IEndpointFilter
     {
         var tasks = new List<TodoDataModel>();
         var rawData = await cache.GetAsync(Constants.CacheKey);
-        if (rawData != null)
+        if (rawData != null && rawData.Any())
         {
             using var memoryStream = new MemoryStream(rawData);
             tasks = await JsonSerializer.DeserializeAsync<List<TodoDataModel>>(memoryStream, Constants.SerializerOptions);

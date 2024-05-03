@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using FluentValidation;
 
 namespace ToDo.Api.Features.Create;

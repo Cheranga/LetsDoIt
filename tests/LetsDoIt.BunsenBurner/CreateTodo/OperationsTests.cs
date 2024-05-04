@@ -30,14 +30,14 @@ public class OperationsTests
                 return (commandHandler, logger, task);
             })
             .Act(async data => await Operations.ExecuteAsync(data.commandHandler.Object, data.logger.Object, data.task))
-            .Assert((data, response) =>
+            .Assert((_, response) =>
             {
                 var problem = response.Result switch
                 {
                     ProblemHttpResult p => p.ProblemDetails,
                     _ => null
                 };
-                problem.Status.Should().Be((int)HttpStatusCode.InternalServerError);
+                problem!.Status.Should().Be((int)HttpStatusCode.InternalServerError);
                 problem.Detail.Should().Be("error occurred when adding a task");
             });
 
@@ -70,7 +70,7 @@ public class OperationsTests
                     _ => null
                 };
                 model.Should().NotBeNull();
-                model.Id.Should().Be("666");
+                model!.Id.Should().Be("666");
                 model.Title.Should().Be(data.task.Title);
                 model.Description.Should().Be(data.task.Description);
                 model.DueDate.Should().Be(data.task.DueDate);

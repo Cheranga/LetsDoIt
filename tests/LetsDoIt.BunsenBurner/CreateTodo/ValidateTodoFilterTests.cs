@@ -82,7 +82,7 @@ public class ValidateTodoFilterTests : IClassFixture<WebApplicationFactory<Progr
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 });
                 todoResponse.Should().NotBeNull();
-                todoResponse.Id.Should().NotBeNullOrEmpty();
+                todoResponse!.Id.Should().NotBeNullOrEmpty();
             });
     }
 }

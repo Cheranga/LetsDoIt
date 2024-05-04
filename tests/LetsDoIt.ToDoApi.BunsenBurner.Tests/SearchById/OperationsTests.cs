@@ -7,7 +7,7 @@ using ToDo.Api.Features.SearchById;
 using ToDo.Api.Infrastructure.DataAccess;
 using static BunsenBurner.Aaa;
 
-namespace LetsDoIt.BunsenBurner.SearchById;
+namespace LetsDoIt.ToDoApi.BunsenBurner.Tests.SearchById;
 
 public static class OperationsTests
 {

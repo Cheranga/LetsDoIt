@@ -12,7 +12,7 @@ using ToDo.Api.Features.GetAll;
 using ToDo.Api.Infrastructure.DataAccess;
 using static BunsenBurner.Aaa;
 
-namespace LetsDoIt.BunsenBurner.GetAllTasks;
+namespace LetsDoIt.ToDoApi.BunsenBurner.Tests.GetAllTasks;
 
 public class GetAllTasksFilterTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
 {

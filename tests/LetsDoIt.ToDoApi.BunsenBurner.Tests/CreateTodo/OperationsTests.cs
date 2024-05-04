@@ -10,7 +10,7 @@ using ToDo.Api.Infrastructure.DataAccess;
 using static BunsenBurner.Aaa;
 using Operations = ToDo.Api.Features.Create.Operations;
 
-namespace LetsDoIt.BunsenBurner.CreateTodo;
+namespace LetsDoIt.ToDoApi.BunsenBurner.Tests.CreateTodo;
 
 public class OperationsTests
 {

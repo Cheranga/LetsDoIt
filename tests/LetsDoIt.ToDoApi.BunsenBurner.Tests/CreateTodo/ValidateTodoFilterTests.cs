@@ -9,7 +9,7 @@ using ToDo.Api.Features.Create;
 using ToDo.Api.Features.SearchById;
 using static BunsenBurner.Aaa;
 
-namespace LetsDoIt.BunsenBurner.CreateTodo;
+namespace LetsDoIt.ToDoApi.BunsenBurner.Tests.CreateTodo;
 
 public class ValidateTodoFilterTests : IClassFixture<WebApplicationFactory<Program>>
 {

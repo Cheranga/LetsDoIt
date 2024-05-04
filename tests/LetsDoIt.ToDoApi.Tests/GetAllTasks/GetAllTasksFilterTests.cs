@@ -15,7 +15,7 @@ namespace LetsDoIt.ToDoApi.Tests.GetAllTasks;
 
 public class GetAllTasksFilterTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
 {
-    [Fact(DisplayName = "When cached, the tasks must be returned from the cache")]
+    [Fact(DisplayName = "Given tasks are cached, when get all endpoint is called, then must return tasks from the cache")]
     public async Task GetAllTasksWhenCached()
     {
         // Arrange

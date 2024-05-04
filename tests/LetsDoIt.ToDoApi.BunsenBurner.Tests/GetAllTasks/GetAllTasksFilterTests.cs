@@ -10,16 +10,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using ToDo.Api.Features.GetAll;
 using ToDo.Api.Infrastructure.DataAccess;
-using static BunsenBurner.Aaa;
+using static BunsenBurner.Bdd;
 
 namespace LetsDoIt.ToDoApi.BunsenBurner.Tests.GetAllTasks;
 
 public class GetAllTasksFilterTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
 {
-    [Fact(DisplayName = "When cached, the tasks must be returned from the cache")]
+    [Fact(DisplayName = "Given tasks are cached, when get all endpoint is called, then must return tasks from the cache")]
     public async Task GetAllTasksWhenCached()
     {
-        await Arrange(() =>
+        await Given(() =>
             {
                 return factory.WithWebHostBuilder(builder =>
                 {
@@ -58,14 +58,14 @@ public class GetAllTasksFilterTests(WebApplicationFactory<Program> factory) : IC
                     })
                     .CreateClient();
             })
-            .Act(async client =>
+            .When(async client =>
             {
                 var httpResponse1 = await client.GetAsync("/todos");
                 var httpResponse2 = await client.GetAsync("/todos");
 
                 return (httpResponse1, httpResponse2);
             })
-            .Assert(responses =>
+            .Then(responses =>
             {
                 responses.httpResponse1.StatusCode.Should().Be(HttpStatusCode.NoContent);
                 responses.httpResponse2.StatusCode.Should().Be(HttpStatusCode.OK);

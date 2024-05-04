@@ -12,10 +12,10 @@ using Operations = ToDo.Api.Features.Create.Operations;
 
 namespace LetsDoIt.ToDoApi.BunsenBurner.Tests.CreateTodo;
 
-public class OperationsTests
+public static class OperationsTests
 {
     [Fact(DisplayName = "Error occurs when saving to database")]
-    public async Task ErrorOccursWhenSavingToDatabase()
+    public static async Task ErrorOccursWhenSavingToDatabase()
     {
         await Arrange(() =>
             {
@@ -40,11 +40,10 @@ public class OperationsTests
                 problem!.Status.Should().Be((int)HttpStatusCode.InternalServerError);
                 problem.Detail.Should().Be("error occurred when adding a task");
             });
-
     }
     
     [Fact(DisplayName = "Valid task will be saved successfully and task id will be returned")]
-    public async Task ValidTask()
+    public static async Task ValidTask()
     {
         await Arrange(() =>
             {

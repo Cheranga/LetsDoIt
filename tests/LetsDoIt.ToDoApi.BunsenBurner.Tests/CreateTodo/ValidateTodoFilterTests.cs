@@ -7,23 +7,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using ToDo.Api.Features.Create;
 using ToDo.Api.Features.SearchById;
-using static BunsenBurner.Aaa;
+using static BunsenBurner.Bdd;
 
 namespace LetsDoIt.ToDoApi.BunsenBurner.Tests.CreateTodo;
 
-public class ValidateTodoFilterTests : IClassFixture<WebApplicationFactory<Program>>
+public class ValidateTodoFilterTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
 {
-    private readonly HttpClient _client;
+    private readonly HttpClient _client = factory.CreateClient();
 
-    public ValidateTodoFilterTests(WebApplicationFactory<Program> factory)
-    {
-        _client = factory.CreateClient();
-    }
-
-    [Fact(DisplayName = "Invalid task must return bad request status code")]
+    [Fact(DisplayName = "Given invalid task, when creating then must return bad response")]
     public async Task InvalidTask()
     {
-        await Arrange(() =>
+        await Given(() =>
             {
                 var task = new Fixture().Build<AddTodoDto>()
                     .Without(x=>x.Title)
@@ -31,12 +26,12 @@ public class ValidateTodoFilterTests : IClassFixture<WebApplicationFactory<Progr
                 var request = new HttpRequestMessage(HttpMethod.Post, "/todos") { Content = JsonContent.Create(task) };
                 return request;
             })
-            .Act(async request =>
+            .When(async request =>
             {
                 var httpResponse = await _client.SendAsync(request);
                 return httpResponse;
             })
-            .Assert(
+            .Then(
                 (_, response) => { response.StatusCode.Should().Be(HttpStatusCode.BadRequest); }
             )
             .And(async response =>
@@ -51,10 +46,10 @@ public class ValidateTodoFilterTests : IClassFixture<WebApplicationFactory<Progr
             });
     }
     
-    [Fact(DisplayName = "Valid task must return created status code")]
+    [Fact(DisplayName = "Given valid task, when creating then must return created response")]
     public async Task ValidTask()
     {
-        await Arrange(() =>
+        await Given(() =>
             {
                 var task = new Fixture()
                     .Build<AddTodoDto>()
@@ -63,12 +58,12 @@ public class ValidateTodoFilterTests : IClassFixture<WebApplicationFactory<Progr
                 var request = new HttpRequestMessage(HttpMethod.Post, $"{_client.BaseAddress}todos") { Content = JsonContent.Create(task) };
                 return request;
             })
-            .Act(async request =>
+            .When(async request =>
             {
                 var httpResponse = await _client.SendAsync(request);
                 return httpResponse;
             })
-            .Assert(
+            .Then(
                 (_, response) => { response.StatusCode.Should().Be(HttpStatusCode.Created); }
             )
             .And(async response =>

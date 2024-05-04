@@ -12,7 +12,13 @@ internal static class Operations
         new(dto.Title, dto.Description, dto.DueDate);
 
     private static TodoResponse ToResponse(this AddTodoDto dto, string id) =>
-        new(id, dto.Title, dto.Description, dto.DueDate);
+        new()
+        {
+            Id = id,
+            Title = dto.Title,
+            Description = dto.Description,
+            DueDate = dto.DueDate
+        };
 
     public static async ValueTask<Results<ProblemHttpResult, Created<TodoResponse>>> ExecuteAsync(
         [FromServices] ICommandHandler<CreateToDoCommand> commandHandler,

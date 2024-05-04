@@ -11,7 +11,7 @@ internal class GetAllTasksFilter(IDistributedCache cache) : IEndpointFilter
     {
         var tasks = new List<TodoDataModel>();
         var rawData = await cache.GetAsync(Constants.CacheKey);
-        if (rawData != null)
+        if (rawData != null && rawData.Any())
         {
             using var memoryStream = new MemoryStream(rawData);
             tasks = await JsonSerializer.DeserializeAsync<List<TodoDataModel>>(memoryStream, Constants.SerializerOptions);
@@ -22,7 +22,13 @@ internal class GetAllTasksFilter(IDistributedCache cache) : IEndpointFilter
             {
                 Tasks =
                 [
-                    ..tasks.Select(x => new TodoResponse(x.Id, x.Title, x.Description, x.DueDate)).ToList()
+                    ..tasks.Select(x => new TodoResponse
+                    {
+                        Id = x.Id,
+                        Title = x.Title,
+                        Description = x.Description,
+                        DueDate = x.DueDate
+                    }).ToList()
                 ]
             });
 

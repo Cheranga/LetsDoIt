@@ -5,7 +5,7 @@ using ToDo.Api.Infrastructure.DataAccess;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddValidatorsFromAssemblyContaining<ToDo.Api.Program>();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 Bootstrapper.RegisterDataAccessDependencies(builder.Services, builder.Configuration);
 
 
@@ -17,7 +17,5 @@ app.RegisterTodoRoutes();
 
 app.Run();
 
-namespace ToDo.Api
-{
-    public class Program;
-}
+
+public partial class Program;

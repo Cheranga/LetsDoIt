@@ -22,8 +22,13 @@ internal static class Operations
             return task == null
                 ? TypedResults.NoContent()
                 : TypedResults.Ok(
-                    new TodoResponse(task.Id, task.Title, task.Description, task.DueDate)
-                );
+                    new TodoResponse
+                    {
+                        Id = task.Id,
+                        Title = task.Title,
+                        Description = task.Description,
+                        DueDate = task.DueDate
+                    });
         }
         catch (Exception exception)
         {

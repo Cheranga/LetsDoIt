@@ -12,7 +12,7 @@ namespace LetsDoIt.ToDoApi.BunsenBurner.Tests.SearchById;
 public static class OperationsTests
 {
     [Fact(DisplayName = "There is no task for the requested task id")]
-    public static async ValueTask NoTaskForProvidedId() =>
+    public static async Task NoTaskForProvidedId() =>
         await Arrange(() =>
             {
                 TodoDataModel? dataModel = null;
@@ -29,7 +29,7 @@ public static class OperationsTests
             .Assert(response => { response.Result.Should().BeOfType<NoContent>(); });
 
     [Fact(DisplayName = "Task is available for the requested task id")]
-    public static async ValueTask TaskIsAvailable() =>
+    public static async Task TaskIsAvailable() =>
         await Arrange(() =>
             {
                 var mockedQueryHandler = new Mock<IQueryHandler<SearchByIdQuery, TodoDataModel>>();
@@ -53,7 +53,7 @@ public static class OperationsTests
             });
 
     [Fact(DisplayName = "When searching for task by id, an error occurs")]
-    public static async ValueTask ErrorWhenGettingTaskFromDatabase() =>
+    public static async Task ErrorWhenGettingTaskFromDatabase() =>
         await Arrange(() =>
             {
                 var mockedQueryHandler = new Mock<IQueryHandler<SearchByIdQuery, TodoDataModel>>();

@@ -13,7 +13,7 @@ namespace LetsDoIt.ToDoApi.BunsenBurner.Tests.GetAllTasks;
 public static class OperationsTests
 {
     [Fact(DisplayName = "Cache only if tasks are available in database")]
-    public static async ValueTask CacheOnlyIfTasksAreAvailable() =>
+    public static async Task CacheOnlyIfTasksAreAvailable() =>
         await Arrange(() =>
             {
                 var mockedCache = new Mock<IDistributedCache>();
@@ -50,7 +50,7 @@ public static class OperationsTests
             .And(response => { response.Result.Should().BeOfType<NoContent>(); });
     
     [Fact(DisplayName = "When tasks are available, it will be cached")]
-    public static async ValueTask TasksAreAvailableAndWillBeCached() =>
+    public static async Task TasksAreAvailableAndWillBeCached() =>
         await Arrange(() =>
             {
                 var mockedCache = new Mock<IDistributedCache>();
@@ -97,7 +97,7 @@ public static class OperationsTests
             });
     
     [Fact(DisplayName = "If error occurs when getting tasks from database, then must return problem response")]
-    public static async ValueTask ErrorWhenGettingTasks() =>
+    public static async Task ErrorWhenGettingTasks() =>
         await Arrange(() =>
             {
                 var mockedQueryHandler = new Mock<IQueryHandler<SearchAllQuery, List<TodoDataModel>>>();

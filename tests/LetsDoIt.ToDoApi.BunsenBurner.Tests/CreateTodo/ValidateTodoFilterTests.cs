@@ -20,15 +20,14 @@ public class ValidateTodoFilterTests(WebApplicationFactory<Program> factory) : I
     {
         await Given(() =>
             {
-                var task = new Fixture().Build<AddTodoDto>()
+                var dto = new Fixture().Build<AddTodoDto>()
                     .Without(x=>x.Title)
                     .Create();
-                var request = new HttpRequestMessage(HttpMethod.Post, "/todos") { Content = JsonContent.Create(task) };
-                return request;
+                return dto;
             })
-            .When(async request =>
+            .When(async dto =>
             {
-                var httpResponse = await _client.SendAsync(request);
+                var httpResponse = await _client.PostAsJsonAsync("/todos", dto);
                 return httpResponse;
             })
             .Then(
@@ -51,16 +50,15 @@ public class ValidateTodoFilterTests(WebApplicationFactory<Program> factory) : I
     {
         await Given(() =>
             {
-                var task = new Fixture()
+                var dto = new Fixture()
                     .Build<AddTodoDto>()
                     .With(x=>x.DueDate, DateTimeOffset.Now.AddDays(1))
                     .Create();
-                var request = new HttpRequestMessage(HttpMethod.Post, $"{_client.BaseAddress}todos") { Content = JsonContent.Create(task) };
-                return request;
+                return dto;
             })
-            .When(async request =>
+            .When(async dto =>
             {
-                var httpResponse = await _client.SendAsync(request);
+                var httpResponse = await _client.PostAsJsonAsync("/todos", dto);
                 return httpResponse;
             })
             .Then(

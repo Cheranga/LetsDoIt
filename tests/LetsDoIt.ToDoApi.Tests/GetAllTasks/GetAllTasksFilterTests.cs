@@ -18,7 +18,7 @@ public class GetAllTasksFilterTests(WebApplicationFactory<Program> factory) : IC
     [Fact(DisplayName = "Given tasks are cached, when get all endpoint is called, then must return tasks from the cache")]
     public async Task GetAllTasksWhenCached()
     {
-        // Arrange
+        // Given
         var httpClient = factory
             .WithWebHostBuilder(builder =>
             {
@@ -44,11 +44,11 @@ public class GetAllTasksFilterTests(WebApplicationFactory<Program> factory) : IC
             })
             .CreateClient();
 
-        // Act
+        // When
         var httpResponse1 = await httpClient.GetAsync("/todos");
         var httpResponse2 = await httpClient.GetAsync("/todos");
 
-        // Assert
+        // Then
         httpResponse1.StatusCode.Should().Be(HttpStatusCode.NoContent);
         httpResponse2.StatusCode.Should().Be(HttpStatusCode.OK);
 

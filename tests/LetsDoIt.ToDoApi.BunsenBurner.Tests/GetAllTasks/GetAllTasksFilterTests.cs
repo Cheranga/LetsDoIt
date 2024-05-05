@@ -17,8 +17,7 @@ namespace LetsDoIt.ToDoApi.BunsenBurner.Tests.GetAllTasks;
 public class GetAllTasksFilterTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
 {
     [Fact(DisplayName = "Given tasks are cached, when get all endpoint is called, then must return tasks from the cache")]
-    public async Task GetAllTasksWhenCached()
-    {
+    public async Task GetAllTasksWhenCached() =>
         await Given(() =>
             {
                 return factory.WithWebHostBuilder(builder =>
@@ -29,14 +28,9 @@ public class GetAllTasksFilterTests(WebApplicationFactory<Program> factory) : IC
                             d.ServiceType == typeof(DbContextOptions<TodoDbContext>)
                         );
                         if (dbContextDescriptor != null)
-                        {
                             services.Remove(dbContextDescriptor);
-                        }
 
-                        services.AddDbContext<TodoDbContext>(optionsBuilder =>
-                        {
-                            optionsBuilder.UseInMemoryDatabase(Guid.NewGuid().ToString("N"));
-                        });
+                        services.AddDbContext<TodoDbContext>(optionsBuilder => { optionsBuilder.UseInMemoryDatabase(Guid.NewGuid().ToString("N")); });
                     });
                 });
             })
@@ -80,5 +74,4 @@ public class GetAllTasksFilterTests(WebApplicationFactory<Program> factory) : IC
                 todoListResponse.Should().NotBeNull();
                 todoListResponse!.Tasks.Should().NotBeNull().And.HaveCount(3);
             });
-    }
 }

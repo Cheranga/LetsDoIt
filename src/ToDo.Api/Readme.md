@@ -409,9 +409,9 @@ and extend it.
 
 > **NOTE:**
 > 
-> `LetsDoIt.ToDoApi.BunsenBurner.Tests` contains tests written using `Bunsen Burner`.
+> [Tests using BunsenBurner](../../tests/LetsDoIt.ToDoApi.BunsenBurner.Tests) can be found here.
 > 
-> `LetsDoIt.ToDoApi.Tests` contains only a few tests which can be used to compare with `Bunsen Burner`
+> [Tests without using BunsenBurner](../../tests/LetsDoIt.ToDoApi.Tests) can be found here, for you to compare and reference.
 
 
 ### References :clap:

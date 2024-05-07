@@ -8,8 +8,7 @@ namespace ToDo.Api.Features.Create;
 
 internal static class Operations
 {
-    private static CreateToDoCommand ToCommand(this AddTodoDto dto) =>
-        new(dto.Title, dto.Description, dto.DueDate);
+    private static CreateToDoCommand ToCommand(this AddTodoDto dto) => new(dto.Title, dto.Description, dto.DueDate);
 
     private static TodoResponse ToResponse(this AddTodoDto dto, string id) =>
         new()

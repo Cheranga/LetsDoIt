@@ -2,7 +2,7 @@
 
 public interface IQuery;
 
-public  interface IQueryHandler<in TQuery, TResponse>
+public interface IQueryHandler<in TQuery, TResponse>
     where TQuery : IQuery
     where TResponse : class
 {

@@ -20,9 +20,7 @@ public class ValidateTodoFilterTests(WebApplicationFactory<Program> factory) : I
     {
         await Given(() =>
             {
-                var dto = new Fixture().Build<AddTodoDto>()
-                    .Without(x=>x.Title)
-                    .Create();
+                var dto = new Fixture().Build<AddTodoDto>().Without(x => x.Title).Create();
                 return dto;
             })
             .When(async dto =>
@@ -31,7 +29,10 @@ public class ValidateTodoFilterTests(WebApplicationFactory<Program> factory) : I
                 return httpResponse;
             })
             .Then(
-                (_, response) => { response.StatusCode.Should().Be(HttpStatusCode.BadRequest); }
+                (_, response) =>
+                {
+                    response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+                }
             )
             .And(async response =>
             {
@@ -39,21 +40,18 @@ public class ValidateTodoFilterTests(WebApplicationFactory<Program> factory) : I
                     await response.Content.ReadAsStreamAsync()
                 );
                 problemResponse.Should().NotBeNull();
-                problemResponse!.Errors.TryGetValue("Title", out var errorMessage).Should().BeTrue();
-                errorMessage.Should().NotBeNullOrEmpty();
-                errorMessage!.First().Should().Contain("Title cannot be empty");
+                problemResponse!.Extensions.TryGetValue("errors", out var errors);
+                errors.Should().NotBeNull();
+                errors!.ToString().Should().Contain("Title cannot be empty");
             });
     }
-    
+
     [Fact(DisplayName = "Given valid task, when creating then must return created response")]
     public async Task ValidTask()
     {
         await Given(() =>
             {
-                var dto = new Fixture()
-                    .Build<AddTodoDto>()
-                    .With(x=>x.DueDate, DateTimeOffset.Now.AddDays(1))
-                    .Create();
+                var dto = new Fixture().Build<AddTodoDto>().With(x => x.DueDate, DateTimeOffset.Now.AddDays(1)).Create();
                 return dto;
             })
             .When(async dto =>
@@ -62,18 +60,20 @@ public class ValidateTodoFilterTests(WebApplicationFactory<Program> factory) : I
                 return httpResponse;
             })
             .Then(
-                (_, response) => { response.StatusCode.Should().Be(HttpStatusCode.Created); }
+                (_, response) =>
+                {
+                    response.StatusCode.Should().Be(HttpStatusCode.Created);
+                }
             )
             .And(async response =>
             {
                 response.Headers.TryGetValues("Location", out var location).Should().BeTrue();
                 location.Should().NotBeNullOrEmpty();
 
-
-                var todoResponse = await JsonSerializer.DeserializeAsync<TodoResponse>(await response.Content.ReadAsStreamAsync(), new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                });
+                var todoResponse = await JsonSerializer.DeserializeAsync<TodoResponse>(
+                    await response.Content.ReadAsStreamAsync(),
+                    new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }
+                );
                 todoResponse.Should().NotBeNull();
                 todoResponse!.Id.Should().NotBeNullOrEmpty();
             });

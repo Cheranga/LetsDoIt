@@ -27,19 +27,23 @@ internal static class Operations
 
             await CacheTasks(cache, tasks, token);
 
-            return TypedResults.Ok(new TodoListResponse
-            {
-                Tasks =
-                [
-                    ..tasks.Select(x => new TodoResponse
-                    {
-                        Id = x.Id,
-                        Title = x.Title,
-                        Description = x.Description,
-                        DueDate = x.DueDate
-                    }).ToList()
-                ]
-            });
+            return TypedResults.Ok(
+                new TodoListResponse
+                {
+                    Tasks =
+                    [
+                        .. tasks
+                            .Select(x => new TodoResponse
+                            {
+                                Id = x.Id,
+                                Title = x.Title,
+                                Description = x.Description,
+                                DueDate = x.DueDate
+                            })
+                            .ToList()
+                    ]
+                }
+            );
         }
         catch (Exception exception)
         {

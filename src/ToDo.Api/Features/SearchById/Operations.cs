@@ -7,9 +7,7 @@ namespace ToDo.Api.Features.SearchById;
 
 internal static class Operations
 {
-    public static async ValueTask<
-        Results<ProblemHttpResult, NoContent, Ok<TodoResponse>>
-    > ExecuteAsync(
+    public static async ValueTask<Results<ProblemHttpResult, NoContent, Ok<TodoResponse>>> ExecuteAsync(
         [FromServices] IQueryHandler<SearchByIdQuery, TodoDataModel> queryHandler,
         [FromServices] ILogger<Program> logger,
         [FromRoute] string id,
@@ -28,7 +26,8 @@ internal static class Operations
                         Title = task.Title,
                         Description = task.Description,
                         DueDate = task.DueDate
-                    });
+                    }
+                );
         }
         catch (Exception exception)
         {

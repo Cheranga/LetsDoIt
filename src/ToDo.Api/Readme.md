@@ -25,6 +25,88 @@ regardless of the chosen testing patterns, naming conventions, etc...
 - [x] All tests must return a `Task` (this is as per design in `Bunsen Burner`)
   - [x] This is better as now you don't want to worry about whether the SUTs are synchronous or asynchronous
 
+## Let's write some fun math tests
+
+You can find these tests in the `ExampleTests.cs` file in the `LetsDoIt.ToDoApi.BunsenBurner.Tests` project.
+
+### Adding numbers
+
+Using `Bunsen Burner`
+
+```csharp
+[Theory(DisplayName = "Adding numbers")]
+[InlineData(1, 1, 2)]
+[InlineData(1, -1, 0)]
+public static async Task TestAddWithBunsen(int a, int b, int expected) =>
+    await Arrange(() => (a,b))
+        .Act(input => input.a + input.b)
+        .Assert(result => result == expected);
+```
+
+Without using `Bunsen Burner`
+
+```csharp
+[Theory(DisplayName = "Adding numbers")]
+[InlineData(1, 1, 2)]
+[InlineData(1, -1, 0)]
+public static void TestAdd(int a, int b, int expected)
+{
+    // Arrange (the input data is provided)
+
+    // Act
+    var result = a + b;
+
+    // Assert
+    Assert.Equal(expected, result);
+}
+```
+
+- [x] When using `Bunsen Burner`, the `Arrange`, `Act`, and the `Assert` sections are separated
+- [x] No need to add comments to separate the sections
+- [x] You can have predicates in the `Assert` section. This is not possible without using `Bunsen Burner`
+- [x] The function chaining pattern, makes it easier to read, and understand the test
+- [x] By using function chaining pattern, the data flow is flown from the `Arrange` to the `Act`, and then to the `Assert` sections
+
+
+### Division by zero
+
+Using `Bunsen Burner`
+
+```csharp
+[Fact(DisplayName = "Division by zero")]
+public static async Task DivisionByZeroBunsen() =>
+    // ReSharper disable once IntDivisionByZero
+    await 1
+        .ArrangeData()
+        .Act(x => x / 0)
+        .AssertFailsWith(exception =>
+        {
+            Assert.IsType<DivideByZeroException>(exception);
+        })
+        .And(exception => exception.Message == "Attempted to divide by zero.");
+```
+
+Without using `Bunsen Burner`
+
+```csharp
+[Fact(DisplayName = "Division by zero")]
+public static void DivisionByZero()
+{
+    // Arrange
+    var denominator = 0;
+
+    // Act and Assert
+    var exception = Assert.Throws<DivideByZeroException>(() => 1 / denominator);
+    Assert.Equal("Attempted to divide by zero.", exception.Message);
+}
+```
+- [x] Regardless of exception being thrown the `Arrange`, `Act`, and the `Assert` sections are separated and remains the same like before
+- [x] Extension methods such as `ArrangeData` has been provided, so an object can be readily available as an `Arrange` section
+- [x] By using the function chaining pattern, can easily add more assertions to the test (this can be done for `Arrange` sections as well)
+
+
+Well enough with the math tests, let's move on to something more interesting! :tada: :heart:
+
 ## System Under Test :tada:
 
 It's a simple task management API, where you can perform,

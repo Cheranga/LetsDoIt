@@ -8,7 +8,6 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 Bootstrapper.RegisterDataAccessDependencies(builder.Services, builder.Configuration);
 
-
 var app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -16,6 +15,5 @@ app.UseHttpsRedirection();
 app.RegisterTodoRoutes();
 
 app.Run();
-
 
 public partial class Program;

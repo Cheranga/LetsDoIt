@@ -47,8 +47,11 @@ public static class OperationsTests
                     );
                 }
             )
-            .And(response => { response.Result.Should().BeOfType<NoContent>(); });
-    
+            .And(response =>
+            {
+                response.Result.Should().BeOfType<NoContent>();
+            });
+
     [Fact(DisplayName = "When tasks are available, it will be cached")]
     public static async Task TasksAreAvailableAndWillBeCached() =>
         await Arrange(() =>
@@ -95,7 +98,7 @@ public static class OperationsTests
                 todoListResponse!.Tasks.Should().NotBeNull();
                 todoListResponse.Tasks.Count.Should().Be(3);
             });
-    
+
     [Fact(DisplayName = "If error occurs when getting tasks from database, then must return problem response")]
     public static async Task ErrorWhenGettingTasks() =>
         await Arrange(() =>
@@ -104,7 +107,7 @@ public static class OperationsTests
                 mockedQueryHandler
                     .Setup(x => x.QueryAsync(It.IsAny<SearchAllQuery>(), It.IsAny<CancellationToken>()))
                     .Throws(new Exception("error!"));
-                
+
                 var mockedCache = new Mock<IDistributedCache>();
 
                 return (mockedCache, mockedQueryHandler);

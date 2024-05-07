@@ -38,7 +38,7 @@ public static class OperationsTests
                         ProblemHttpResult p => p.ProblemDetails,
                         _ => null
                     };
-                    problem!.Status.Should().Be((int) HttpStatusCode.InternalServerError);
+                    problem!.Status.Should().Be((int)HttpStatusCode.InternalServerError);
                     problem.Detail.Should().Be("error occurred when adding a task");
                 }
             );

@@ -10,14 +10,9 @@ internal static class Constants
 {
     internal const string CacheKey = "GetAllTasks";
 
-    internal static readonly JsonSerializerOptions SerializerOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-    };
-    
-    internal static readonly DistributedCacheEntryOptions CacheOptions = new()
-    {
-        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30)
-    };
+    internal static readonly JsonSerializerOptions SerializerOptions =
+        new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull };
+
+    internal static readonly DistributedCacheEntryOptions CacheOptions =
+        new() { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30) };
 }

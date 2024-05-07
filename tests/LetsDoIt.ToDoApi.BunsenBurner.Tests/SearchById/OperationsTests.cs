@@ -26,7 +26,10 @@ public static class OperationsTests
             .Act(async qh =>
                 await Operations.ExecuteAsync(qh.Object, Mock.Of<ILogger<Program>>(), "666", It.IsAny<CancellationToken>())
             )
-            .Assert(response => { response.Result.Should().BeOfType<NoContent>(); });
+            .Assert(response =>
+            {
+                response.Result.Should().BeOfType<NoContent>();
+            });
 
     [Fact(DisplayName = "Task is available for the requested task id")]
     public static async Task TaskIsAvailable() =>

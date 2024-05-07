@@ -16,10 +16,8 @@ public static class OperationsTests
         // Arrange
         var mockedCache = new Mock<IDistributedCache>();
 
-        var mockedQueryHandler = new Mock<IQueryHandler<SearchAllQuery,
-            List<TodoDataModel>>>();
-        mockedQueryHandler
-            .Setup(x => x.QueryAsync(It.IsAny<SearchAllQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync([]);
+        var mockedQueryHandler = new Mock<IQueryHandler<SearchAllQuery, List<TodoDataModel>>>();
+        mockedQueryHandler.Setup(x => x.QueryAsync(It.IsAny<SearchAllQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync([]);
 
         // Act
         var response = await Operations.ExecuteAsync(mockedCache.Object, mockedQueryHandler.Object, Mock.Of<ILogger<Program>>());

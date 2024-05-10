@@ -12,7 +12,7 @@ namespace LetsDoIt.ToDoApi.BunsenBurner.Tests.GetAllTasks;
 
 public static class OperationsTests
 {
-    [Fact(DisplayName = "Cache only if tasks are available in database")]
+    [Fact(DisplayName = "Cache only if tasks are in the database")]
     public static async Task CacheOnlyIfTasksAreAvailable() =>
         await Arrange(() =>
             {

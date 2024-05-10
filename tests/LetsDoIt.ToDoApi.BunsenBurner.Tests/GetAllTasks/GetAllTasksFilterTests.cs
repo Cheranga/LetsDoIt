@@ -40,10 +40,14 @@ public partial class GetAllTasksFilterTests(WebApplicationFactory<Program> facto
             .When(async client =>
             {
                 var httpResponse1 = await client.GetAsync("/todos");
+                return httpResponse1;
+            })
+            .And(async (client, httpResponse1) =>
+            {
                 var httpResponse2 = await client.GetAsync("/todos");
 
                 return (httpResponse1, httpResponse2);
-            })
+            } )
             .Then(responses =>
             {
                 responses.httpResponse1.StatusCode.Should().Be(HttpStatusCode.NoContent);

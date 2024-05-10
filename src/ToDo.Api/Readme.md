@@ -1,29 +1,30 @@
 # Bunsen Burner 🔥
 
-A [testing library](https://github.com/bmazzarol/Bunsen-Burner) which helps to easily write 
+A [testing library](https://github.com/bmazzarol/Bunsen-Burner) which makes it easier to write 
 well-structured test cases in both `Arrange, Act, Assert (AAA)`, and `Given, When, Then (BDD)`
 testing patterns.
 
 ## Context :dart:
 
-When it comes to testing .NET applications, there are many options.
+When it comes to testing .NET applications, there are many options, and opinions.
 
-I think, as .NET developers, we are privileged to have such a plateau of options to choose.
-But, this can be a problem as well, since now we have too many options to choose, ranging 
-from packages, conventions, and guides.
+It's always better to have a variety of options to choose from, and it really comes to the team
+and the practices followed in an organization.
 
-Let me introduce you to `Bunsen Burner` where you can write tests easily in a well-structured approach 
-regardless of the chosen testing patterns, naming conventions, etc...
+But regardless of the chosen practice; writing better tests with structure and organization has 
+been ever important, and this is where `Bunsen Burner` comes in.
+
+`Bunsen Burner` makes writing well-structured tests easier, regardless of the patterns or conventions you choose.
 
 ## Why Bunsen Burner?
 
 - [x] Can easily write tests in a more structured, and in an organized manner
 - [x] If you can write basic C#, that's it! Nothing new to learn
 - [x] Both `AAA`, and `BDD` style patterns are supported through a fluent API syntax
-- [x] Easily extendable using extension methods
-  - [x] This will make it easier for your setups, and assertions
-- [x] All tests must return a `Task` (this is as per design in `Bunsen Burner`)
-  - [x] This is better as now you don't want to worry about whether the SUTs are synchronous or asynchronous
+- [x] Easily extendable using simple methods
+  - [x] Having methods makes it DRY
+  - [x] You could even make these methods into a separate class, or library to reuse across projects
+- [x] `Async` first design as you don't want to worry about whether the SUTs are synchronous or asynchronous (this is as per design in `Bunsen Burner`)
 
 ## Let's write some fun math tests
 
@@ -189,7 +190,7 @@ For unit tests, let's use the `AAA` pattern, and for integration tests the `beha
 
 ### Unit tests of the `GetAll.Operations` class
 
-> Cache only if tasks are available in database
+> Cache only if tasks are in the database
 
 Without using `Bunsen Burner`
 
@@ -225,8 +226,11 @@ public static async Task CacheOnlyIfTasksAreAvailable()
 ```
 
 As you can see above, we usually use "comments" to segregate the arranges, act, and the respective asserts.
-This test could be a simple one to contrast, but think we can all agree that, if there were lot to set up in 
-the "arrange" section or in the assertions this could, will definitely look messy.
+This test could be a simple one to contrast against as this test does not contain much complicated arranges or assertions.
+
+But if you could imagine a test case where you had to setup a few more things, and there were many things to assert, 
+using this approach will certainly be messy 
+
 
 Using `Bunsen Burner` for the same test,
 
@@ -340,6 +344,7 @@ As you could see, there's lot going on in the setup and in the assertions, and t
 on what you are testing of course.
 
 Using `Bunsen Burner`
+
 ```csharp
 [Fact(DisplayName = "Given tasks are cached, when get all endpoint is called, then must return tasks from the cache")]
 public async Task GetAllTasksWhenCached() =>
@@ -347,15 +352,7 @@ public async Task GetAllTasksWhenCached() =>
         {
             return factory.WithWebHostBuilder(builder =>
             {
-                builder.ConfigureTestServices(services =>
-                {
-                    var dbContextDescriptor = services.SingleOrDefault(d =>
-                        d.ServiceType == typeof(DbContextOptions<TodoDbContext>)
-                    );
-                    if (dbContextDescriptor != null)
-                        services.Remove(dbContextDescripto
-                    services.AddDbContext<TodoDbContext>(optionsBuilder => { optionsBuilder.UseInMemoryDatabase(Guid.NewGuid().ToString("N")); });
-                });
+                builder.ConfigureTestServices(SetupInMemoryDataStore);
             });
         })
         .And(f =>
@@ -364,13 +361,7 @@ public async Task GetAllTasksWhenCached() =>
                 {
                     builder.ConfigureTestServices(services =>
                     {
-                        var tasks = new Fixture().CreateMany<TodoDataModel>().ToList();
-                        var mockedCache = new Mock<IDistributedCache>();
-                        mockedCache
-                            .SetupSequence(x => x.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                            .ReturnsAsync([])
-                            .ReturnsAsync(JsonSerializer.SerializeToUtf8Bytes(tasks, Constants.SerializerOptions
-                        services.AddSingleton(mockedCache.Object);
+                        SetupMockedCache(services, [], new Fixture().CreateMany<TodoDataModel>().ToList());
                     });
                 })
                 .CreateClient();
@@ -378,9 +369,13 @@ public async Task GetAllTasksWhenCached() =>
         .When(async client =>
         {
             var httpResponse1 = await client.GetAsync("/todos");
+            return httpResponse1;
+        })
+        .And(async (client, httpResponse1) =>
+        {
             var httpResponse2 = await client.GetAsync("/todos");
             return (httpResponse1, httpResponse2);
-        })
+        } )
         .Then(responses =>
         {
             responses.httpResponse1.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -388,11 +383,7 @@ public async Task GetAllTasksWhenCached() =>
         })
         .And(async responses =>
         {
-            var responseContent2 = await responses.httpResponse2.Content.ReadAsStringAsync();
-            var todoListResponse = JsonSerializer.Deserialize<TodoListResponse>(
-                responseContent2,
-                Constants.SerializerOptions
-            );
+            var todoListResponse = await GetToDoListResponse(responses.httpResponse2);
             todoListResponse.Should().NotBeNull();
             todoListResponse!.Tasks.Should().NotBeNull().And.HaveCount(3);
         });
@@ -404,8 +395,7 @@ The setting up, and the assertions are the same, and the test is more structured
 
 If you want to perform, another setup, or an assertion, the best approach, is to simply 
 use the `And` method using fluent API syntax and perform the operation. 
-Further, if you want to extend the functionality you can merely create your own extension method
-and extend it.
+Further, if you want to extend the functionality you can merely create your own method, and extend it.
 
 > **NOTE:**
 > 

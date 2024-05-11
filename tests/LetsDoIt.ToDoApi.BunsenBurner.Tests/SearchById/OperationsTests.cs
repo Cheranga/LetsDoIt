@@ -11,8 +11,8 @@ namespace LetsDoIt.ToDoApi.BunsenBurner.Tests.SearchById;
 
 public static class OperationsTests
 {
-    [Fact(DisplayName = "There is no task by the provided task id")]
-    public static async ValueTask NoTaskForProvidedId() =>
+    [Fact(DisplayName = "There is no task for the requested task id")]
+    public static async Task NoTaskForProvidedId() =>
         await Arrange(() =>
             {
                 TodoDataModel? dataModel = null;
@@ -26,10 +26,13 @@ public static class OperationsTests
             .Act(async qh =>
                 await Operations.ExecuteAsync(qh.Object, Mock.Of<ILogger<Program>>(), "666", It.IsAny<CancellationToken>())
             )
-            .Assert(response => { response.Result.Should().BeOfType<NoContent>(); });
+            .Assert(response =>
+            {
+                response.Result.Should().BeOfType<NoContent>();
+            });
 
-    [Fact(DisplayName = "Task is available")]
-    public static async ValueTask TaskIsAvailable() =>
+    [Fact(DisplayName = "Task is available for the requested task id")]
+    public static async Task TaskIsAvailable() =>
         await Arrange(() =>
             {
                 var mockedQueryHandler = new Mock<IQueryHandler<SearchByIdQuery, TodoDataModel>>();
@@ -52,8 +55,8 @@ public static class OperationsTests
                 todoResponse.Should().NotBeNull();
             });
 
-    [Fact(DisplayName = "When searching for task error occurs in database query")]
-    public static async ValueTask ErrorWhenGettingTaskFromDatabase() =>
+    [Fact(DisplayName = "When searching for task by id, an error occurs")]
+    public static async Task ErrorWhenGettingTaskFromDatabase() =>
         await Arrange(() =>
             {
                 var mockedQueryHandler = new Mock<IQueryHandler<SearchByIdQuery, TodoDataModel>>();

@@ -18,19 +18,23 @@ internal class GetAllTasksFilter(IDistributedCache cache) : IEndpointFilter
         }
 
         if (tasks != null && tasks.Any())
-            return TypedResults.Ok(new TodoListResponse
-            {
-                Tasks =
-                [
-                    ..tasks.Select(x => new TodoResponse
-                    {
-                        Id = x.Id,
-                        Title = x.Title,
-                        Description = x.Description,
-                        DueDate = x.DueDate
-                    }).ToList()
-                ]
-            });
+            return TypedResults.Ok(
+                new TodoListResponse
+                {
+                    Tasks =
+                    [
+                        .. tasks
+                            .Select(x => new TodoResponse
+                            {
+                                Id = x.Id,
+                                Title = x.Title,
+                                Description = x.Description,
+                                DueDate = x.DueDate
+                            })
+                            .ToList()
+                    ]
+                }
+            );
 
         return await next(context);
     }

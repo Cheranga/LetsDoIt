@@ -21,25 +21,27 @@ internal static class Operations
         {
             var tasks = await queryHandler.QueryAsync(new SearchAllQuery(), token) ?? new List<TodoDataModel>();
             if (!tasks.Any())
-            {
                 return TypedResults.NoContent();
-            }
 
             await CacheTasks(cache, tasks, token);
 
-            return TypedResults.Ok(new TodoListResponse
-            {
-                Tasks =
-                [
-                    ..tasks.Select(x => new TodoResponse
-                    {
-                        Id = x.Id,
-                        Title = x.Title,
-                        Description = x.Description,
-                        DueDate = x.DueDate
-                    }).ToList()
-                ]
-            });
+            return TypedResults.Ok(
+                new TodoListResponse
+                {
+                    Tasks =
+                    [
+                        .. tasks
+                            .Select(x => new TodoResponse
+                            {
+                                Id = x.Id,
+                                Title = x.Title,
+                                Description = x.Description,
+                                DueDate = x.DueDate
+                            })
+                            .ToList()
+                    ]
+                }
+            );
         }
         catch (Exception exception)
         {

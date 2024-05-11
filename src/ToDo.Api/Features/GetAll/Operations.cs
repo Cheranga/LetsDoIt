@@ -21,9 +21,7 @@ internal static class Operations
         {
             var tasks = await queryHandler.QueryAsync(new SearchAllQuery(), token) ?? new List<TodoDataModel>();
             if (!tasks.Any())
-            {
                 return TypedResults.NoContent();
-            }
 
             await CacheTasks(cache, tasks, token);
 

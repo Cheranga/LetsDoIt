@@ -1,6 +1,6 @@
 # Bunsen Burner 🔥
 
-A [testing library](https://github.com/bmazzarol/Bunsen-Burner) which makes it easier to write 
+A [testing library](https://github.com/bmazzarol/Bunsen-Burner) which makes it easier to write
 well-structured test cases in both `Arrange, Act, Assert (AAA)`, and `Given, When, Then (BDD)`
 testing patterns.
 
@@ -8,27 +8,29 @@ testing patterns.
 
 When it comes to testing .NET applications, there are many options, and opinions.
 
-It's always better to have a variety of options to choose from, and it really comes to the team
-and the practices followed in an organization.
+It's always better to have a variety of options to choose from, and it really comes down to the team
+and the practices followed by that team.
 
-But regardless of the chosen practice; writing better tests with structure and organization has 
-been ever important, and this is where `Bunsen Burner` comes in.
+But regardless of the chosen practice; writing better tests with structure and organization has
+always been important, and this is where `Bunsen Burner` comes in.
 
-`Bunsen Burner` makes writing well-structured tests easier, regardless of the patterns or conventions you choose.
+`Bunsen Burner` makes writing well-structured tests easier.
 
 ## Why Bunsen Burner?
 
-- [x] Can easily write tests in a more structured, and in an organized manner
+- [x] Can easily write tests in a more structured and organized manner
 - [x] If you can write basic C#, that's it! Nothing new to learn
-- [x] Both `AAA`, and `BDD` style patterns are supported through a fluent API syntax
+- [x] Both `AAA`, and `BDD` styles are supported through in a fluent way
 - [x] Easily extendable using simple methods
-  - [x] Having methods makes it DRY
-  - [x] You could even make these methods into a separate class, or library to reuse across projects
-- [x] `Async` first design as you don't want to worry about whether the SUTs are synchronous or asynchronous (this is as per design in `Bunsen Burner`)
+    - [x] Having methods makes it DRY
+    - [x] You could even pull these methods into a separate class, or library to reuse across projects
+- [x] `Async` first design so that you can write synchronous or asynchronous tests with ease (this is as per design
+  in `Bunsen Burner`)
 
 ## Let's write some fun math tests
 
-You can find these tests in the `ExampleTests.cs` file in the `LetsDoIt.ToDoApi.BunsenBurner.Tests` project.
+You can find these tests in the [`ExampleTests.cs`](../../tests/LetsDoIt.ToDoApi.BunsenBurner.Tests/ExampleTests.cs)
+file in the `LetsDoIt.ToDoApi.BunsenBurner.Tests` project.
 
 ### Adding numbers
 
@@ -64,10 +66,8 @@ public static void TestAdd(int a, int b, int expected)
 
 - [x] When using `Bunsen Burner`, the `Arrange`, `Act`, and the `Assert` sections are separated
 - [x] No need to add comments to separate the sections
-- [x] You can have predicates in the `Assert` section. This is not possible without using `Bunsen Burner`
-- [x] The function chaining pattern, makes it easier to read, and understand the test
-- [x] By using function chaining pattern, the data flow is flown from the `Arrange` to the `Act`, and then to the `Assert` sections
-
+- [x] You can have predicate expressions in the `Assert` section. This is not possible without using `Bunsen Burner`
+- [x] The function chaining pattern, makes it easier to read, and understand the "flow" of the test
 
 ### Division by zero
 
@@ -101,26 +101,29 @@ public static void DivisionByZero()
     Assert.Equal("Attempted to divide by zero.", exception.Message);
 }
 ```
-- [x] Regardless of exception being thrown the `Arrange`, `Act`, and the `Assert` sections are separated and remains the same like before
-- [x] Extension methods such as `ArrangeData` has been provided, so an object can be readily available as an `Arrange` section
-- [x] By using the function chaining pattern, can easily add more assertions to the test (this can be done for `Arrange` sections as well)
 
+- [x] Regardless of the exception being thrown the `Arrange`, `Act`, and the `Assert` sections are separated and remain
+  the same
+- [x] Extension methods such as `ArrangeData` are been provided, so an object can be lifted into an `Arrange` section
+- [x] By using the function chaining pattern, you can easily add more assertions to the test (this can be done
+  for `Arrange`, and `Act` sections as well)
 
 Well enough with the math tests, let's move on to something more interesting! :tada: :heart:
 
 ## System Under Test :tada:
 
 It's a simple task management API, where you can perform,
-- [x] Add task
-- [x] Get all tasks
-- [x] Get task by id
 
-To keep things simple enough, we are using entity framework's in-memory database for data operations.
+- [x] Adding a task
+- [x] Getting all tasks
+- [x] Getting a task by id
 
-To make things interesting `distributed caching` has been introduced when getting all tasks, 
-and an `endpoint filter` has been included for validation when adding a task.
+To keep things simple, we are using entity framework's in-memory database for the data operations.
 
-### Add Task
+And to make things interesting we are adding `distributed caching` when getting all tasks,
+and an `endpoint filter` for validation when adding a task.
+
+### Adding a Task
 
 We will include an `endpoint filter` to perform validation on the input request.
 
@@ -141,10 +144,10 @@ else
 end
 ```
 
-### Get All Tasks
+### Geting All Tasks
 
-In here we'll use an `endpoint filter` to cache the tasks retrieved from database.
-To implement distributed cache, we are using `Microsoft.Extensions.Caching.Memory` 
+In here we'll use an `endpoint filter` to cache the tasks retrieved from the database.
+To implement distributed caching, we are using `Microsoft.Extensions.Caching.Memory`
 which is an in-memory implementation of `IDistributedCache`.
 
 ```mermaid
@@ -167,7 +170,7 @@ else
 end
 ```
 
-### Search Task by Id
+### Searching Tasks by Id
 
 ```mermaid
 sequenceDiagram
@@ -181,14 +184,14 @@ else
 end
 ```
 
-## Testing `Get All Tasks`
+## Testing `Getting All Tasks`
 
 We'll use unit tests to test the internal operations, and an integration test approach
 to test the behaviour of this feature from an endpoint perspective.
 
-For unit tests, let's use the `AAA` pattern, and for integration tests the `behavioural` pattern. 
+For unit tests, let's use the `AAA` pattern, and for integration tests the `behavioural` pattern.
 
-### Unit tests of the `GetAll.Operations` class
+### Unit tests for the `GetAll.Operations` class
 
 > Cache only if tasks are in the database
 
@@ -226,11 +229,11 @@ public static async Task CacheOnlyIfTasksAreAvailable()
 ```
 
 As you can see above, we usually use "comments" to segregate the arranges, act, and the respective asserts.
-This test could be a simple one to contrast against as this test does not contain much complicated arranges or assertions.
+This test could be a simple one to contrast against as this test does not contain complicated arrange sections or
+assertions.
 
-But if you could imagine a test case where you had to setup a few more things, and there were many things to assert, 
-using this approach will certainly be messy 
-
+But if you imagine a test case where you had to setup a few more things, and there were many assertions then using this
+approach could become messy.
 
 Using `Bunsen Burner` for the same test,
 
@@ -273,24 +276,25 @@ public static async Task CacheOnlyIfTasksAreAvailable() =>
         .And(response => { response.Result.Should().BeOfType<NoContent>(); });
 ```
 
-There are some striking differences with this approach. 
+There are some striking differences with this approach.
+
 * The `Arrange`, `Act`, and the `Assertions` have been separated
-* Multiple "arrange" sections, and "assert" sections can be written using the fluent API syntax
-* Arranged data, are passed to the `Act` section as function parameter
-* All the "arranged" data, and the "act response/s" are passed to the "Assert" section for assertions
+* Multiple "arrange" sections, and "assert" sections can be written using a fluent approach
+* Arranged data is passed to the `Act` section as a function parameter
+* All the "Arranged" data, and the "Act/s" are passed to the "Assert" section for assertions
 
 > **Note:**
-> 
-> Please refer the other tests for the `Operations` class with and without using `Bunsen Burner`.
+>
+> Please refer to the other tests for the `Operations` class with and without using `Bunsen Burner`.
 >
 
 ### Integration tests of the `GetAll` endpoint
 
-In here we are using `Microsoft.AspNetCore.Mvc.Testing` to set up integration tests.
-
-We'll be using the `behavioural` pattern in here.
+Here we are using `Microsoft.AspNetCore.Mvc.Testing` to set up integration tests using Test server, and we'll be using
+the `behavioural` pattern.
 
 When testing this,
+
 * We'll need to inject an in-memory database implementation
 * We'll need to call the endpoint twice, to check whether it uses the distributed cache
 
@@ -301,47 +305,49 @@ Without using `Bunsen Burner`
 public async Task GetAllTasksWhenCached()
 {
     // Given
+    var fixture = new Fixture();
+    var mockedQueryHandler = GetMockedQueryHandler(
+        [],
+        fixture.CreateMany<TodoDataModel>(5).ToList(),
+        fixture.CreateMany<TodoDataModel>(10).ToList()
+    );
     var httpClient = factory
         .WithWebHostBuilder(builder =>
         {
             builder.ConfigureTestServices(services =>
             {
-                var dbContextDescriptor = services.SingleOrDefault(d =>
-                    d.ServiceType == typeof(DbContextOptions<TodoDbContext>)
-                );
-                if (dbContextDescriptor != null)
-                    services.Remove(dbContextDescriptor);
-
-                services.AddDbContext<TodoDbContext>(optionsBuilder => { optionsBuilder.UseInMemoryDatabase(Guid.NewGuid().ToString("N")); });
-
-                var tasks = new Fixture().CreateMany<TodoDataModel>().ToList();
-                var mockedCache = new Mock<IDistributedCache>();
-                mockedCache
-                    .SetupSequence(x => x.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync([])
-                    .ReturnsAsync(JsonSerializer.SerializeToUtf8Bytes(tasks, Constants.SerializerOptions));
-
-                services.AddSingleton(mockedCache.Object);
+                services.AddSingleton(mockedQueryHandler.Object);
             });
         })
         .CreateClient();
 
     // When
+    // Call the endpoint three times
     var httpResponse1 = await httpClient.GetAsync("/todos");
     var httpResponse2 = await httpClient.GetAsync("/todos");
+    var httpResponse3 = await httpClient.GetAsync("/todos");
 
     // Then
+    // The query handler must be called only two times, as the third response must be taken from the cache
+    mockedQueryHandler.Verify(x => x.QueryAsync(It.IsAny<SearchAllQuery>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+    // The first response must be 204 No Content
+    // The second and third responses must be 200 OK
     httpResponse1.StatusCode.Should().Be(HttpStatusCode.NoContent);
     httpResponse2.StatusCode.Should().Be(HttpStatusCode.OK);
+    httpResponse3.StatusCode.Should().Be(HttpStatusCode.OK);
 
-    var responseContent2 = await httpResponse2.Content.ReadAsStringAsync();
-    var todoListResponse = JsonSerializer.Deserialize<TodoListResponse>(responseContent2, Constants.SerializerOptions);
+    var todoListResponse = await GetToDoListResponse(httpResponse2);
     todoListResponse.Should().NotBeNull();
-    todoListResponse!.Tasks.Should().NotBeNull().And.HaveCount(3);
+    todoListResponse!.Tasks.Should().NotBeNull().And.HaveCount(5);
+
+    todoListResponse = await GetToDoListResponse(httpResponse3);
+    todoListResponse.Should().NotBeNull();
+    todoListResponse!.Tasks.Should().NotBeNull().And.HaveCount(5);
 }
 ```
-As you could see, there's lot going on in the setup and in the assertions, and this could easily become messy
-on what you are testing of course.
+
+As you could see, there's lot going on in the setup and in the assertions, and this could easily detract from what we
+are trying to test.
 
 Using `Bunsen Burner`
 
@@ -350,60 +356,105 @@ Using `Bunsen Burner`
 public async Task GetAllTasksWhenCached() =>
     await Given(() =>
         {
-            return factory.WithWebHostBuilder(builder =>
-            {
-                builder.ConfigureTestServices(SetupInMemoryDataStore);
-            });
+            var fixture = new Fixture();
+            return GetMockedQueryHandler(
+                [],
+                fixture.CreateMany<TodoDataModel>(5).ToList(),
+                fixture.CreateMany<TodoDataModel>(10).ToList()
+            );
         })
-        .And(f =>
+        .And(qh =>
         {
-            return f.WithWebHostBuilder(builder =>
+            var client = factory
+                .WithWebHostBuilder(builder =>
                 {
                     builder.ConfigureTestServices(services =>
                     {
-                        SetupMockedCache(services, [], new Fixture().CreateMany<TodoDataModel>().ToList());
+                        services.AddSingleton(qh.Object);
                     });
                 })
                 .CreateClient();
+
+            return (queryHandler: qh, client);
         })
-        .When(async client =>
+        .When(async data =>
         {
-            var httpResponse1 = await client.GetAsync("/todos");
+            var httpResponse1 = await GetAllTasks(data.client);
             return httpResponse1;
         })
-        .And(async (client, httpResponse1) =>
-        {
-            var httpResponse2 = await client.GetAsync("/todos");
-            return (httpResponse1, httpResponse2);
-        } )
+        .And(
+            async (data, httpResponse1) =>
+            {
+                var httpResponse2 = await GetAllTasks(data.client);
+                return (httpResponse1, httpResponse2);
+            }
+        )
+        .And(
+            async (data, responses) =>
+            {
+                var httpResponse3 = await GetAllTasks(data.client);
+                return (responses.httpResponse1, responses.httpResponse2, httpResponse3);
+            }
+        )
         .Then(responses =>
         {
             responses.httpResponse1.StatusCode.Should().Be(HttpStatusCode.NoContent);
             responses.httpResponse2.StatusCode.Should().Be(HttpStatusCode.OK);
+            responses.httpResponse3.StatusCode.Should().Be(HttpStatusCode.OK);
+        })
+        .And(
+            (data, _) =>
+            {
+                data.queryHandler.Verify(
+                    x => x.QueryAsync(It.IsAny<SearchAllQuery>(), It.IsAny<CancellationToken>()),
+                    Times.Exactly(2)
+                );
+            }
+        )
+        .And(async responses =>
+        {
+            var todoListResponse = await GetToDoListFromResponse(responses.httpResponse2);
+            todoListResponse.Should().NotBeNull();
+            todoListResponse!.Tasks.Should().NotBeNull().And.HaveCount(5);
         })
         .And(async responses =>
         {
-            var todoListResponse = await GetToDoListResponse(responses.httpResponse2);
+            var todoListResponse = await GetToDoListFromResponse(responses.httpResponse3);
             todoListResponse.Should().NotBeNull();
-            todoListResponse!.Tasks.Should().NotBeNull().And.HaveCount(3);
+            todoListResponse!.Tasks.Should().NotBeNull().And.HaveCount(5);
         });
 ```
 
-That's right! `Bunsen Burner` supports both `AAA`, and `BDD` patterns of testing.
+The setup and the assertions are the same, and the test is more structured.
 
-The setting up, and the assertions are the same, and the test is more structured.
+If you want to perform another setup or an assertion, the best approach is to simply
+use the `And` method.
 
-If you want to perform, another setup, or an assertion, the best approach, is to simply 
-use the `And` method using fluent API syntax and perform the operation. 
-Further, if you want to extend the functionality you can merely create your own method, and extend it.
+If you want to extend the functionality simply create your own methods.
 
 > **NOTE:**
-> 
+>
 > [Tests using BunsenBurner](../../tests/LetsDoIt.ToDoApi.BunsenBurner.Tests) can be found here.
-> 
-> [Tests without using BunsenBurner](../../tests/LetsDoIt.ToDoApi.Tests) can be found here, for you to compare and reference.
-
+>
+> [Tests without using BunsenBurner](../../tests/LetsDoIt.ToDoApi.Tests) can be found here, for you to compare and
+> reference.
 
 ### References :clap:
 
 * [Bunsen Burner on GitHub](https://github.com/bmazzarol/Bunsen-Burner)
+
+### Feedback :heart:
+
+If you have any feedbacks, or suggestions, please feel free to open an issue on the GitHub repository.
+
+If you want to create a PR, please feel free to do so.
+When you create the PR, please make sure to follow the guidelines provided in the repository.
+
+Please run the below commands at the root level before creating a PR, as it will format the code, according to
+`CSharpier` rules.
+
+```bash
+dotnet tool restore
+dotnet husky install
+dotnet husky run
+```

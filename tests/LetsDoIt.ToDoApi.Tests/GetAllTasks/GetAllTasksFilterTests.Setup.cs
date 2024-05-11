@@ -1,6 +1,4 @@
-using System.Text;
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -11,16 +9,17 @@ namespace LetsDoIt.ToDoApi.Tests.GetAllTasks;
 
 public partial class GetAllTasksFilterTests
 {
-    private static void SetupInMemoryDataStore(IServiceCollection services)
+    private static Mock<IQueryHandler<SearchAllQuery, List<TodoDataModel>>> GetMockedQueryHandler(
+        params List<TodoDataModel>[] results
+    )
     {
-        var dbContextDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<TodoDbContext>));
-        if (dbContextDescriptor != null)
-            services.Remove(dbContextDescriptor);
+        var mockedQueryHandler = new Mock<IQueryHandler<SearchAllQuery, List<TodoDataModel>>>();
+        var setupAction = mockedQueryHandler.SetupSequence(x =>
+            x.QueryAsync(It.IsAny<SearchAllQuery>(), It.IsAny<CancellationToken>())
+        );
+        results.ToList().ForEach(x => setupAction.ReturnsAsync(x));
 
-        services.AddDbContext<TodoDbContext>(optionsBuilder =>
-        {
-            optionsBuilder.UseInMemoryDatabase(Guid.NewGuid().ToString("N"));
-        });
+        return mockedQueryHandler;
     }
 
     private static void SetupMockedCache(IServiceCollection services, params List<TodoDataModel>[] results)
@@ -28,9 +27,7 @@ public partial class GetAllTasksFilterTests
         var mockedCache = new Mock<IDistributedCache>();
         var setupResult = mockedCache.SetupSequence(x => x.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()));
         foreach (var result in results)
-        {
             setupResult.ReturnsAsync(JsonSerializer.SerializeToUtf8Bytes(result, Constants.SerializerOptions));
-        }
 
         services.AddSingleton(mockedCache.Object);
     }

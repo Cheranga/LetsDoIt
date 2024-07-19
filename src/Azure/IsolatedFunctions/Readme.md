@@ -24,7 +24,8 @@
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "FUNCTIONS_WORKER_RUNTIME_VERSION": "8.0"
   }
 }
 ```
@@ -33,7 +34,12 @@
 
 ```json
 {
-  "version": "2.0"
+  "version": "2.0",
+  "logging": {
+    "logLevel": {
+      "default": "Information"
+    }
+  }
 }
 ```
 
@@ -42,6 +48,35 @@
   * `CopyToPublishDirectory` as `false`
 
 ## HTTP Trigger
+
+* Install `Microsoft.Azure.Functions.Worker.Extensions.Http` nuget package
+* Create a basic function as below
+
+```csharp
+public class CreateOrderFunction(ILogger<CreateOrderFunction> logger)
+{
+    [Function(nameof(CreateOrderFunction))]
+    public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "orders")] HttpRequestData request)
+    {
+        var dtoRequest = await request.ReadFromJsonAsync<CreateOrderRequest>();
+        if (dtoRequest == null)
+        {
+            logger.LogWarning("Create order request does not contain any data to proceed");
+            return request.CreateResponse(HttpStatusCode.InternalServerError);
+        }
+
+        logger.LogInformation("{@CreateOrderRequest} request received", dtoRequest);
+        var dtoResponse = new OrderAcceptedResponse(dtoRequest.OrderId,
+            dtoRequest.ReferenceId, DateTimeOffset.UtcNow);
+        
+        
+        var httpResponse = request.CreateResponse();
+        await httpResponse.WriteAsJsonAsync(dtoResponse, HttpStatusCode.Accepted);
+        
+        return httpResponse;
+    }
+}
+```
 
 
 ## Running the project locally

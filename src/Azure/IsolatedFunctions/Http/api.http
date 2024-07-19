@@ -1,4 +1,4 @@
-﻿POST http://localhost:7071/api/CreateOrderFunction
+﻿POST http://localhost:7071/api/orders
 Content-Type: application/json
 
 {

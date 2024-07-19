@@ -4,5 +4,10 @@
     "http": {
       "routePrefix": "api"
     }
+  },
+  "logging": {
+    "logLevel": {
+      "default": "Information"
+    }
   }
 }

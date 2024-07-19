@@ -6,23 +6,19 @@ using Microsoft.Extensions.Logging;
 
 namespace IsolatedFunctions.Http;
 
-public class CreateOrderFunction
+public class CreateOrderFunction(ILogger<CreateOrderFunction> logger)
 {
-    private readonly ILogger<CreateOrderFunction> _logger;
-
-    public CreateOrderFunction(ILogger<CreateOrderFunction> logger) => _logger = logger;
-
     [Function(nameof(CreateOrderFunction))]
-    public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
+    public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "orders")] HttpRequestData request)
     {
         var dtoRequest = await request.ReadFromJsonAsync<CreateOrderRequest>();
         if (dtoRequest == null)
         {
-            _logger.LogWarning("Create order request does not contain any data to proceed");
+            logger.LogWarning("Create order request does not contain any data to proceed");
             return request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
-        _logger.LogInformation("{@CreateOrderRequest} request received", dtoRequest);
+        logger.LogInformation("{@CreateOrderRequest} request received", dtoRequest);
         var dtoResponse = new OrderAcceptedResponse(dtoRequest.OrderId,
             dtoRequest.ReferenceId, DateTimeOffset.UtcNow);
         

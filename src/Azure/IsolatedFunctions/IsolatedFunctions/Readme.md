@@ -43,3 +43,10 @@
 
 ## HTTP Trigger
 
+
+## Running the project locally
+
+* Create a run configuration as shown below
+ 
+![Setting run configuration for Azure function](../../../../Images/function_run_configuration.png "Azure Function Run Configuration")
+

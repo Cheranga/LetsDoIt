@@ -1,0 +1,7 @@
+﻿POST http://localhost:7071/api/CreateOrderFunction
+Content-Type: application/json
+
+{
+  "orderId": "ORD_000123",
+  "referenceId": "bruce.wayne@gotham.com"
+}

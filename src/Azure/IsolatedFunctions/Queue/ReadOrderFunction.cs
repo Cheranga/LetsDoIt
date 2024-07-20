@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using Azure.Storage.Queues.Models;
-using IsolatedFunctions.Dto;
+﻿using IsolatedFunctions.Dto;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 

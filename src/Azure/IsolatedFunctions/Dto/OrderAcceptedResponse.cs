@@ -9,7 +9,7 @@ public record OrderAcceptedResponse
 {
     public HttpResponseData HttpResponse { get; set; }
 
-    [QueueOutput(queueName: "sample-work", Connection = "AzureWebJobsSourceConnection")]
+    [QueueOutput(queueName: "%Source:Queue%", Connection = "SourceConnection")]
     public string[] Messages { get; set; }
 
     public static async Task<OrderAcceptedResponse> EmptyRequest(HttpRequestData request)

@@ -88,7 +88,7 @@ public class CreateOrderFunction(ILogger<CreateOrderFunction> logger)
 
 * Create a run configuration as shown below
  
-![Setting run configuration for Azure function](../../../../Images/function_run_configuration.png "Azure Function Run Configuration")
+![Setting run configuration for Azure function](../../../Images/function_run_configuration.png "Azure Function Run Configuration")
 
 ## BLOB Trigger
 

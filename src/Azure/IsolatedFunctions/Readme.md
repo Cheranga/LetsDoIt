@@ -85,3 +85,45 @@ public class CreateOrderFunction(ILogger<CreateOrderFunction> logger)
  
 ![Setting run configuration for Azure function](../../../../Images/function_run_configuration.png "Azure Function Run Configuration")
 
+## BLOB Trigger
+
+> Note
+> Make sure you have the latest `Azurite` running in your machine
+> If you don't have the latest `Azurite` installed in your machine, you'll get an error as below at runtime
+
+![azurite_error](../../../Images/azurite_error.png)
+
+* To fix this, do the following,
+  * Install latest `npm`
+  * Install latest `Azurite` through `npm`
+
+```
+npm install -g npm@latest
+npm install -g azurite@latest
+```
+
+* Install `Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs`
+
+* Add a BLOB trigger function as below. It simply reads a file from a BLOB container
+
+```csharp
+public class FileCopyFunction
+{
+    private readonly ILogger<FileCopyFunction> _logger;
+
+    public FileCopyFunction(ILogger<FileCopyFunction> logger)
+    {
+        _logger = logger;
+    }
+
+    [Function(nameof(FileCopyFunction))]
+    public async Task Run([BlobTrigger("sample-work/{name}")] Stream sourceStream, string name)
+    {
+        using var reader = new StreamReader(sourceStream);
+        var content = await reader.ReadToEndAsync();
+        
+        _logger.LogInformation("{FileName} was read successfully", name);
+    }
+}
+```
+

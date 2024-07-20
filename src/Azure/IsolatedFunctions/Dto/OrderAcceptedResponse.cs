@@ -1,9 +1,22 @@
 ﻿using System.Net;
 using System.Text.Json;
+using Azure;
+using Azure.Data.Tables;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
 namespace IsolatedFunctions.Dto;
+
+public record CreateOrderDataModel : ITableEntity
+{
+    public string OrderId { get; set; }
+    public string ReferenceId { get; set; }
+
+    public string PartitionKey { get; set; }
+    public string RowKey { get; set; }
+    public DateTimeOffset? Timestamp { get; set; }
+    public ETag ETag { get; set; }
+}
 
 public record OrderAcceptedResponse
 {
@@ -11,6 +24,9 @@ public record OrderAcceptedResponse
 
     [QueueOutput(queueName: "%Source:Queue%", Connection = "SourceConnection")]
     public string[] Messages { get; set; }
+
+    [TableOutput(tableName:"%Source:Table%", Connection = "SourceConnection")]
+    public CreateOrderDataModel DataModel { get; set; }
 
     public static async Task<OrderAcceptedResponse> EmptyRequest(HttpRequestData request)
     {
@@ -28,12 +44,21 @@ public record OrderAcceptedResponse
         await httpResponse.WriteAsJsonAsync(dtoRequest, HttpStatusCode.Accepted);
 
         var serialized = JsonSerializer.Serialize(dtoRequest);
+        var dataModel = new CreateOrderDataModel
+        {
+            OrderId = dtoRequest.OrderId,
+            ReferenceId = dtoRequest.ReferenceId,
+            PartitionKey = $"{dtoRequest.OrderId}_{dtoRequest.ReferenceId}",
+            RowKey = Guid.NewGuid().ToString("N"),
+            Timestamp = DateTimeOffset.UtcNow
+        };
         
 
         return new OrderAcceptedResponse
         {
             HttpResponse = httpResponse,
-            Messages = [serialized, serialized, serialized]
+            Messages = [serialized],
+            DataModel = dataModel
         };
     }
 }

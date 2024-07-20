@@ -117,7 +117,7 @@ public class FileCopyFunction
     }
 
     [Function(nameof(FileCopyFunction))]
-    public async Task Run([BlobTrigger("sample-work/{name}")] Stream sourceStream, string name)
+    public async Task Run([BlobTrigger("sample-work/{name}", Connection = "SourceConnection")] Stream sourceStream, string name)
     {
         using var reader = new StreamReader(sourceStream);
         var content = await reader.ReadToEndAsync();
@@ -126,4 +126,21 @@ public class FileCopyFunction
     }
 }
 ```
+
+* As a best practice, it's best to separate Azure function and application related storages and configurations
+  * In `local.settings.json` add `AzureWebJobsSourceConnection` to point to the storage
+
+```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "FUNCTIONS_WORKER_RUNTIME_VERSION": "8.0",
+    "AzureWebJobsSourceConnection": "UseDevelopmentStorage=true"
+  }
+}
+```
+
+* In the Azure function we use the "SourceConnection" part only to specify the connection string
 

@@ -32,12 +32,17 @@
 
 * Create `host.json` file with below content
 
+> Note: setting the default log level to `Warning` will filter unnecessary logs.
+> Set the `Function` log level to `Information` so you could actually see the logs which you want to see from functions
+> If you would like to set log levels for individual functions use `Function.[FUNCTION NAME]` syntax
+
 ```json
 {
   "version": "2.0",
   "logging": {
     "logLevel": {
-      "default": "Information"
+      "default": "Warning",
+      "Function": "Information"
     }
   }
 }
@@ -167,4 +172,19 @@ public class ReadOrderFunction(ILogger<ReadOrderFunction> logger)
         logger.LogInformation("Create order request received {@CreateOrderRequest}", message);
     }
 }
+```
+
+## Multiple Responses
+
+Sometimes we would like to do more than one thing which is related to the functionality.
+An example of this would be returning a successful HTTP response, while publishing a message to the queue.
+
+To handle such scenarios, create a specific type which contains those responses.
+
+## Disabling a Function
+
+* You can disable any function using configuration as below
+
+```
+"AzureWebJobs.[FUNCTION NAME].Disabled": true
 ```

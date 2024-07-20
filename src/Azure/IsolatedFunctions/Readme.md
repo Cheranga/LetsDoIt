@@ -144,3 +144,27 @@ public class FileCopyFunction
 
 * In the Azure function we use the "SourceConnection" part only to specify the connection string
 
+## Queue Trigger
+
+* Install `Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues` nuget package
+* You can bind to [different types](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue?tabs=isolated-process%2Cextensionv5%2Cextensionv3&pivots=programming-language-csharp#binding-types) when binding to the trigger, my favourite is to bind directly to the DTO type
+  * `string`
+  * `byte`
+  * `JSON serializable type`
+  * `QueueMessage`
+  * `BinaryData`
+
+* Setting storage related configuration it's similar to BLOB triggered function
+* Add a queue trigger function as below
+
+```csharp
+public class ReadOrderFunction(ILogger<ReadOrderFunction> logger)
+{
+    [Function(nameof(ReadOrderFunction))]
+    public async Task Run([QueueTrigger(queueName: "%Source:Queue%", Connection = "SourceConnection")] CreateOrderRequest message)
+    {
+        await Task.Delay(TimeSpan.FromSeconds(1));
+        logger.LogInformation("Create order request received {@CreateOrderRequest}", message);
+    }
+}
+```

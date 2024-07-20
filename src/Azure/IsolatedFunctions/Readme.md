@@ -96,7 +96,7 @@ public class CreateOrderFunction(ILogger<CreateOrderFunction> logger)
 > Make sure you have the latest `Azurite` running in your machine
 > If you don't have the latest `Azurite` installed in your machine, you'll get an error as below at runtime
 
-![azurite_error](../../../Images/azurite_error.png)
+![azurite_error](../../../Images/azurite_error.png "Azurite error with incompatible versions")
 
 * To fix this, do the following,
   * Install latest `npm`

@@ -30,6 +30,10 @@
 }
 ```
 
+> Note:
+> As a best practice separate sensitive data in your local development as well
+> Adding a user secrets file to include sensitive configurations is a better approach
+
 * Create `host.json` file with below content
 
 > Note: setting the default log level to `Warning` will filter unnecessary logs.

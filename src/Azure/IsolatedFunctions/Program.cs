@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -14,6 +15,10 @@ var host = new HostBuilder()
             options.WriteIndented = false;
             options.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         });
+    })
+    .ConfigureAppConfiguration(builder =>
+    {
+        builder.AddUserSecrets<Program>();
     })
     .Build();
 

@@ -1,6 +1,4 @@
 using System.Text.Json;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using ToDo.Api.Features.GetAll;
 using ToDo.Api.Infrastructure.DataAccess;
@@ -20,16 +18,6 @@ public partial class GetAllTasksFilterTests
         results.ToList().ForEach(x => setupAction.ReturnsAsync(x));
 
         return mockedQueryHandler;
-    }
-
-    private static void SetupMockedCache(IServiceCollection services, params List<TodoDataModel>[] results)
-    {
-        var mockedCache = new Mock<IDistributedCache>();
-        var setupResult = mockedCache.SetupSequence(x => x.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()));
-        foreach (var result in results)
-            setupResult.ReturnsAsync(JsonSerializer.SerializeToUtf8Bytes(result, Constants.SerializerOptions));
-
-        services.AddSingleton(mockedCache.Object);
     }
 
     private static async Task<TodoListResponse?> GetToDoListResponse(HttpResponseMessage httpResponse)

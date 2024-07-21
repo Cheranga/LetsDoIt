@@ -13,7 +13,6 @@ public class FileCopyFunction(ILogger<FileCopyFunction> logger)
     {
         using var reader = new StreamReader(sourceStream);
         var content = await reader.ReadToEndAsync();
-
-        logger.LogInformation("{FileName} was read successfully", name);
+        logger.LogInformation("{FileName} was read successfully {Content}", name, content);
     }
 }

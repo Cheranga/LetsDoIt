@@ -1,32 +1,19 @@
 ﻿using System.Net;
 using System.Text.Json;
-using Azure;
-using Azure.Data.Tables;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
 namespace IsolatedFunctions.Dto;
 
-public record CreateOrderDataModel : ITableEntity
-{
-    public string OrderId { get; set; }
-    public string ReferenceId { get; set; }
-
-    public string PartitionKey { get; set; }
-    public string RowKey { get; set; }
-    public DateTimeOffset? Timestamp { get; set; }
-    public ETag ETag { get; set; }
-}
-
 public record OrderAcceptedResponse
 {
-    public HttpResponseData HttpResponse { get; set; }
+    public HttpResponseData? HttpResponse { get; set; }
 
     [QueueOutput(queueName: "%Source:Queue%", Connection = "SourceConnection")]
-    public string[] Messages { get; set; }
+    public string[] Messages { get; set; } = [];
 
     [TableOutput(tableName: "%Source:Table%", Connection = "SourceConnection")]
-    public CreateOrderDataModel DataModel { get; set; }
+    public CreateOrderDataModel DataModel { get; set; } = new();
 
     public static async Task<OrderAcceptedResponse> EmptyRequest(HttpRequestData request)
     {

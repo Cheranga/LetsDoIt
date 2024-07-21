@@ -40,9 +40,9 @@ public class ValidateTodoFilterTests(WebApplicationFactory<Program> factory) : I
                     await response.Content.ReadAsStreamAsync()
                 );
                 problemResponse.Should().NotBeNull();
-                problemResponse!.Extensions.TryGetValue("errors", out var errors);
-                errors.Should().NotBeNull();
-                errors!.ToString().Should().Contain("Title cannot be empty");
+                problemResponse!.Errors.Should().NotBeNullOrEmpty();
+                problemResponse.Errors.Should().ContainKey("Title");
+                problemResponse.Errors["Title"].Should().ContainSingle(x => string.Equals(x, "Title cannot be empty"));
             });
     }
 

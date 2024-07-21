@@ -1,0 +1,11 @@
+root = true
+
+[*.cs]
+# Use Task.ConfigureAwait
+dotnet_diagnostic.MA0004.severity = suggestion
+
+# Prefer using collection abstractions
+dotnet_diagnostic.MA0016.severity = suggestion
+
+# Method is too long
+dotnet_diagnostic.MA0051.severity = suggestion

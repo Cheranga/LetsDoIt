@@ -18,4 +18,3 @@ var host = new HostBuilder()
     .Build();
 
 await host.RunAsync();
-    

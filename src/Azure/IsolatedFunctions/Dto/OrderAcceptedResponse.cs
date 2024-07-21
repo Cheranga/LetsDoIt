@@ -25,17 +25,14 @@ public record OrderAcceptedResponse
     [QueueOutput(queueName: "%Source:Queue%", Connection = "SourceConnection")]
     public string[] Messages { get; set; }
 
-    [TableOutput(tableName:"%Source:Table%", Connection = "SourceConnection")]
+    [TableOutput(tableName: "%Source:Table%", Connection = "SourceConnection")]
     public CreateOrderDataModel DataModel { get; set; }
 
     public static async Task<OrderAcceptedResponse> EmptyRequest(HttpRequestData request)
     {
         var httpResponse = request.CreateResponse(HttpStatusCode.BadRequest);
         await httpResponse.WriteStringAsync("Invalid request, and does not adhere to the schema of the request");
-        return new OrderAcceptedResponse
-        {
-            HttpResponse = httpResponse
-        };
+        return new OrderAcceptedResponse { HttpResponse = httpResponse };
     }
 
     public static async Task<OrderAcceptedResponse> Success(HttpRequestData httpRequest, CreateOrderRequest dtoRequest)
@@ -52,7 +49,6 @@ public record OrderAcceptedResponse
             RowKey = Guid.NewGuid().ToString("N"),
             Timestamp = DateTimeOffset.UtcNow
         };
-        
 
         return new OrderAcceptedResponse
         {

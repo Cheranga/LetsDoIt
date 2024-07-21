@@ -10,7 +10,9 @@ namespace IsolatedFunctions.Http;
 public class CreateOrderFunction(ILogger<CreateOrderFunction> logger)
 {
     [Function(nameof(CreateOrderFunction))]
-    public async Task<OrderAcceptedResponse> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "orders")] HttpRequestData request)
+    public async Task<OrderAcceptedResponse> Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "orders")] HttpRequestData request
+    )
     {
         var dtoRequest = await request.ReadFromJsonAsync<CreateOrderRequest>();
         if (dtoRequest == null)

@@ -4,9 +4,8 @@ concurrency: letsdoit.isolated.functions
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
-      - feature/*
+    paths:
+      - Azure/**
   pull_request:
     branches: [ 'main' ]
 

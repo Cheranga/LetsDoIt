@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - Azure/**
+      - ../src/Azure/**
   pull_request:
     branches: [ 'main' ]
 

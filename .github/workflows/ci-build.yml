@@ -24,7 +24,5 @@ jobs:
         with:
           dotnet-version: |
             8.0.x
-      - name: Install dependencies
-        run: dotnet restore src/Azure/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj
-      - name: Build
-        run: dotnet build --configuration Release --no-restore src/Azure/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj
+      - name: Restore
+        run: dotnet restore      

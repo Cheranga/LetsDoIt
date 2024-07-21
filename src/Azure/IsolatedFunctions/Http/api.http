@@ -1,0 +1,7 @@
+﻿POST http://localhost:7071/api/orders
+Content-Type: application/json
+
+{
+  "orderId": "ORD_000123",
+  "referenceId": "bruce.wayne@gotham.com"
+}

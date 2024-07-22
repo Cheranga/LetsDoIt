@@ -35,6 +35,8 @@ jobs:
         run: dotnet csharpier . --check
         
   restoreandbuild:
+    needs: 
+      - build
     name: Restore and Build    
     uses: ./.github/workflows/restore-and-build.yml
     with:

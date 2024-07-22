@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env: 
-  PROJECT-NAME: IsolatedFunctions
+  PROJECT_NAME: IsolatedFunctions
 
 jobs:  
   build:
@@ -42,7 +42,7 @@ jobs:
     name: Restore and Build    
     uses: ./.github/workflows/restore-and-build.yml
     with:
-      project-path: src/Azure/${{ env.PROJECT-NAME }}/${{ env.PROJECT-NAME }}.csproj
+      project-path: src/Azure/${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj
         
       
         

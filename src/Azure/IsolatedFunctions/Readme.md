@@ -193,4 +193,6 @@ To handle such scenarios, create a specific type which contains those responses.
 "AzureWebJobs.[FUNCTION NAME].Disabled": true
 ```
 
-## Adding Central Package Management 
+## Adding Central Package Management
+
+## Adding CI/CD

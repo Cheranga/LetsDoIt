@@ -28,10 +28,11 @@ jobs:
           dotnet-version: |
             8.0.x
             
-      - name: Run CSharpier        
-        uses: ./.github/actions/check-code-format.yml
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
+      - name: Restore .NET Tools        
+        run: dotnet tool restore
+        
+      - name: Check C# Code Formattings
+        run: dotnet csharpier . --check 
         
       - name: Restore Dependencies
         run: dotnet restore src/Azure/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj

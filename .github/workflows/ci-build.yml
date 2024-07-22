@@ -22,7 +22,10 @@ jobs:
           - IsolatedFunctions
     steps:
       - name: Checkout
-        uses: actions/checkout@v4        
+        uses: actions/checkout@v4      
+        
+      - name: Echo Test
+        run: echo ${{ env.PROJECT_NAME }}
         
       - name: Setup .NET
         uses: actions/setup-dotnet@v4

@@ -1,0 +1,17 @@
+name: Restore and Build
+on:
+  workflow_call: 
+    inputs: 
+      project-path:
+        required: true
+        type: string
+        
+jobs:
+  restoreandbuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore Dependencies
+        run: dotnet restore ${{ inputs.project-path }}
+        
+      - name: Build Project
+        run: dotnet build --configuration Release --no-restore ${{ inputs.project-path }} 

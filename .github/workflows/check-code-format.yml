@@ -1,0 +1,14 @@
+﻿name: checkcodeformattings
+on: 
+    workflow_call: 
+
+jobs: 
+    restoretools:
+        runs-on: ubuntu-latest
+        steps:            
+            - name: Restore .NET Tools
+              run: dotnet tool restore
+              
+            - name: Check C# Code Format
+              run: dotnet csharpier . --check
+            

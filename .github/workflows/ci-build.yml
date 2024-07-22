@@ -10,6 +10,9 @@ on:
     branches: [ 'main' ]
   workflow_dispatch:
 
+env: 
+  PROJECT-NAME: IsolatedFunctions
+
 jobs:  
   build:
     runs-on: ubuntu-latest
@@ -39,7 +42,7 @@ jobs:
     name: Restore and Build    
     uses: ./.github/workflows/restore-and-build.yml
     with:
-      project-path: src/Azure/IsolatedFunctions/IsolatedFunctions.csproj
+      project-path: src/Azure/${{ env.PROJECT-NAME }}/${{ env.PROJECT-NAME }}.csproj
         
       
         

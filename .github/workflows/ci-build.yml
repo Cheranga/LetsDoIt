@@ -19,6 +19,8 @@ jobs:
           - IsolatedFunctions
     steps:
       - uses: actions/checkout@v4
+        with: 
+          ref: ${{ github.head_ref || github.ref_name }}
       
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -26,8 +28,8 @@ jobs:
           dotnet-version: |
             8.0.x
             
-      - name: Run CSharpier        
-        uses: ./.github/actions/check-code-format.yml
+      - uses: ./.github/actions/check-code-format.yml        
+        name: Run CSharpier
         
       - name: Restore Dependencies
         run: dotnet restore src/Azure/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj

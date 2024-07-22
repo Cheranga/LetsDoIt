@@ -26,8 +26,8 @@ jobs:
           dotnet-version: |
             8.0.x
             
-      - name: Run CSharpier
-        uses: ./.github/workflows/./check-code-format.yml
+      - name: Run CSharpier        
+        uses: ../.github/workflows/./check-code-format.yml
         
       - name: Restore Dependencies
         run: dotnet restore src/Azure/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj

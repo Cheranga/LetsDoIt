@@ -5,13 +5,7 @@ on:
 jobs: 
     restoretools:
         runs-on: ubuntu-latest
-        steps:
-            - name: Setup .NET
-              uses: actions/setup-dotnet@v4
-              with:
-                  dotnet-version: |
-                      8.0.x
-            
+        steps:            
             - name: Restore .NET Tools
               run: dotnet tool restore
               

@@ -20,19 +20,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            
       - name: Run CSharpier
-        uses: ./check-code-format.yml
-#      - name: Setup .NET
-#        uses: actions/setup-dotnet@v4
-#        with:
-#          dotnet-version: |
-#            8.0.x
-#            
-#      - name: Restore .NET Tools
-#        run: dotnet tool restore
-#        
-#      - name: Check C# Code Format
-#        run: dotnet csharpier . --check
+        uses: ./.github/workflows/./check-code-format.yml
         
       - name: Restore Dependencies
         run: dotnet restore src/Azure/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj

@@ -40,7 +40,7 @@ jobs:
     name: Restore and Build    
     uses: ./.github/workflows/restore-and-build.yml
     with:
-      project-path: src/Azure/${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj
+      project-path: src/Azure/IsolatedFunctions/IsolatedFunctions.csproj
       
   buildversionnumber:
     runs-on: ubuntu-latest

@@ -27,6 +27,8 @@ jobs:
   usingartifacts:
     name: Using Artifacts
     runs-on: ubuntu-latest
+    needs: 
+      - creatingartifacts
     steps:
       - name: Download deployment templates
         uses: actions/download-artifact@v3
@@ -37,6 +39,8 @@ jobs:
   provisionresources:
     name: Provisioning
     runs-on: ubuntu-latest
+    needs: 
+      - usingartifacts
     environment: ${{ inputs.environment }}
     steps:
       - name: Login to Azure

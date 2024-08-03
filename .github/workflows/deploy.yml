@@ -1,0 +1,22 @@
+name: provisionresources
+
+on:
+  workflow_call:
+    inputs: 
+      environment:
+        type: string
+        required: true
+    secrets:
+      credentials:
+        required: true
+        
+jobs:
+  provisionresources:
+    name: Provisioning
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.credentials }}    

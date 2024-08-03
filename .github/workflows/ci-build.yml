@@ -46,9 +46,20 @@ jobs:
     uses: ./.github/workflows/restore-and-build.yml
     with:
       project-path: src/Azure/IsolatedFunctions/IsolatedFunctions.csproj
-        
       
-        
+  DEV:
+    name: DEV
+    needs: 
+      - restoreandbuild
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: DEV
+    secrets: 
+      credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
+
+
+
 #      - name: Restore Dependencies
 #        run: dotnet restore src/Azure/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj
 #        

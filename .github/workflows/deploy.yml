@@ -1,0 +1,52 @@
+name: provisionresources
+
+on:
+  workflow_call:
+    inputs: 
+      environment:
+        type: string
+        required: true
+    secrets:
+      subscriptionId:
+        required: true
+      credentials:
+        required: true
+        
+jobs:
+  provisioning:
+    name: Provisioning
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Upload deployment templates
+        uses: actions/upload-artifact@v3
+        with:
+          name: deploy
+          path: ./.github/bicep
+          if-no-files-found: error
+          
+      - name: Download deployment artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: deploy
+          path: deploy
+          
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.credentials }}
+          
+      - name: Provision Azure Resources
+        uses: azure/arm-deploy@v1
+        with:
+          failOnStdErr: false
+          deploymentName: ${{ env.ARTIFACT_NAME }}
+          scope: subscription
+          region: australiasoutheast
+          subscriptionId: ${{ secrets.subscriptionId }}
+          template: deploy/main.bicep
+          parameters: >
+            appName=funky-isolated
+            version=1.0.0
+            environment=dev
+            location=australiasoutheast

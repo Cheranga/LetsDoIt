@@ -10,11 +10,6 @@ on:
     branches: [ 'main' ]
   workflow_dispatch:
 
-env: 
-  PROJECT_NAME: IsolatedFunctions
-  APP_NAME: funky-iso
-  LOCATION: australiasoutheast
-
 jobs:  
   build:
     runs-on: ubuntu-latest
@@ -58,8 +53,8 @@ jobs:
       - restoreandbuild
     uses: ./.github/workflows/deploy.yml
     with:
-      applicationName: ${{ env.APP_NAME }}
-      location: ${{ env.LOCATION }}
+      applicationName: funky-iso
+      location: australiasoutheast
       versionNumber: ${{ env.BUILD_VERSION }}
       environment: DEV
     secrets: 

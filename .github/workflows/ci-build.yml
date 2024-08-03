@@ -47,15 +47,18 @@ jobs:
         run: |
           echo "BUILD_VERSION=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
       
+    outputs: 
+      versionNumber: ${{ env.BUILD_VERSION }}
+      
   DEV:
     name: DEV
     needs: 
-      - restoreandbuild
+      - buildversionnumber
     uses: ./.github/workflows/deploy.yml
     with:
       applicationName: funky-iso
       location: australiasoutheast
-      versionNumber: ${{ env.BUILD_VERSION }}
+      versionNumber: ${{ needs.buildversionnumber.outputs.versionNumber }}
       environment: DEV
     secrets: 
       credentials: ${{ secrets.AZURE_CREDENTIALS }}

@@ -56,6 +56,16 @@ jobs:
       environment: DEV
     secrets: 
       credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      
+  QA:
+    name: QA
+    needs:
+      - restoreandbuild
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: QA
+    secrets:
+      credentials: ${{ secrets.AZURE_CREDENTIALS }}      
 
 
 

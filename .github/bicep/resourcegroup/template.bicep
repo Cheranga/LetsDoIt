@@ -2,12 +2,12 @@ targetScope='subscription'
 
 
 @description('Name of the resource group')
-param resourceGroupName string
+param name string
 
 @description('Location where the resource group will be created')
-param resourceGroupLocation string
+param location string
 
 resource newRg 'Microsoft.Resources/resourceGroups@2024-03-01' = {
-  name: resourceGroupName
-  location: resourceGroupLocation
+  name: name
+  location: location
 }

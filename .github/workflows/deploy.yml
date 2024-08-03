@@ -2,15 +2,34 @@ name: provisionresources
 
 on:
   workflow_call:
-    inputs: 
+    inputs:
+      applicationName:
+        type: string
+        required: true
+        description: Application name
+        
       environment:
         type: string
         required: true
+        description: Environment name
+      
+      location:
+        type: string
+        required: true
+        description: Resource group location
+      
+      versionNumber:
+        type: string
+        required: true
+        description: Version number to track deployments
+        
     secrets:
       subscriptionId:
         required: true
+        description: Azure subscription id
       credentials:
         required: true
+        description: Azure service principal details used to provision Azure resources
         
 jobs:
   provisioning:
@@ -49,7 +68,7 @@ jobs:
           subscriptionId: ${{ secrets.subscriptionId }}
           template: deploy/main.bicep
           parameters: >
-            appName=funky-isolated
-            version=1.0.0
-            environment=dev
-            location=australiasoutheast
+            appName=${{ inputs.applicationName }}
+            version=${{ inputs.versionNumber }}
+            environment=${{ inputs.environment }}
+            location=${{ inputs.location }}

@@ -59,7 +59,7 @@ jobs:
       applicationName: funky-iso
       location: australiasoutheast
       versionNumber: ${{ needs.buildversionnumber.outputs.versionNumber }}
-      environment: DEV
+      environment: dev
     secrets: 
       credentials: ${{ secrets.AZURE_CREDENTIALS }}
       subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}

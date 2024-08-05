@@ -59,7 +59,7 @@ jobs:
           if-no-files-found: error
     
     outputs:
-      artifactName: ${{ env.BUILD_VERSION }}
+      VersionNumber: ${{ env.BUILD_VERSION }}
   
   
 #  restoreandbuild:
@@ -83,16 +83,16 @@ jobs:
 #    outputs: 
 #      versionNumber: ${{ env.BUILD_VERSION }}
 #      
-#  DEV:
-#    name: DEV
-#    needs: 
-#      - buildversionnumber
-#    uses: ./.github/workflows/deploy.yml
-#    with:
-#      applicationName: funky-iso
-#      location: australiasoutheast
-#      versionNumber: ${{ needs.buildversionnumber.outputs.versionNumber }}
-#      environment: dev
-#    secrets: 
-#      credentials: ${{ secrets.AZURE_CREDENTIALS }}
-#      subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+  DEV:
+    name: DEV
+    needs: 
+      - build
+    uses: ./.github/workflows/deploy.yml
+    with:
+      applicationName: funky-iso
+      location: australiasoutheast
+      versionNumber: ${{ needs.build.outputs.VersionNumber }}
+      environment: dev
+    secrets: 
+      credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}

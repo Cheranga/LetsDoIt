@@ -39,8 +39,9 @@ module storageAccount 'storageaccount/template.bicep' = {
   scope: resourceGroup(rgName)
   params: {
     name: sgName    
-    queues: 'inputs'
+    queues: 'sample-work'
     blobContainers: 'input'
+    tables: 'samplework'
     storageType: envType[environment]
   }
   dependsOn: [

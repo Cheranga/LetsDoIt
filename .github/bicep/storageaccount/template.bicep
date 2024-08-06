@@ -1,10 +1,12 @@
 ﻿param name string
 param queues string
 param blobContainers string
+param tables string
 
 var location = resourceGroup().location
 var queueArray = empty(queues)? [] : split(queues, ',')
 var containerArray = empty(blobContainers)? [] : split(blobContainers, ',')
+var tableArray = empty(tables)? [] : split(tables, ',')
 
 @allowed([
   'nonprod'
@@ -39,5 +41,13 @@ resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01'
   name: 'default'
   resource aaa 'containers' = [for c in containerArray: {
     name: c
+  }]
+}
+
+resource tableService 'Microsoft.Storage/storageAccounts/tableServices@2023-05-01'= if (!empty(tableArray)) {
+  parent: stg
+  name: 'default'
+  resource aaa 'tables' = [for t in tableArray: {
+    name: t
   }]
 }

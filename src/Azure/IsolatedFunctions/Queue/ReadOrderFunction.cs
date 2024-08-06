@@ -6,7 +6,7 @@ namespace IsolatedFunctions.Queue;
 
 public class ReadOrderFunction(ILogger<ReadOrderFunction> logger)
 {
-    [Function(nameof(ReadOrderFunction))]
+    // [Function(nameof(ReadOrderFunction))]
     public async Task Run([QueueTrigger(queueName: "%Source:Queue%", Connection = "SourceConnection")] CreateOrderRequest message)
     {
         await Task.Delay(TimeSpan.FromSeconds(1));

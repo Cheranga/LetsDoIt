@@ -26,6 +26,7 @@ var appSettings = {
   Source__Queue: 'sample-work'
   Source__Container: 'sample-work'
   Source__Table: 'samplework'
+  AzureWebJobsSourceConnection : '@Microsoft.KeyVault(SecretUri=${kv.properties.vaultUri}/secrets/storageAccountConnectionString/)'
 }
 
 resource productionSlotAppSettings 'Microsoft.Web/sites/config@2021-02-01' = {

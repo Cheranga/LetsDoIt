@@ -12,8 +12,8 @@ param location string
 param environment string
 
 var envType = {
-    dev: 'nonprod',
-    qa: 'nonprod',
+    dev: 'nonprod'
+    qa: 'nonprod'
     prod: 'prod'
     } 
 

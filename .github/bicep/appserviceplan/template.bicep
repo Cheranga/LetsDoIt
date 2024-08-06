@@ -14,7 +14,7 @@ var sku = {
   prod: 'Y1'
 }
 
-var location string = resourceGroup().location
+var location = resourceGroup().location
 
 resource asp 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: name

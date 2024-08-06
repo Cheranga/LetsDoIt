@@ -1,7 +1,8 @@
 targetScope = 'resourceGroup'
 
 param name string
-param location string = resourceGroup().location
+
+var location = resourceGroup().location
 
 resource kv 'Microsoft.KeyVault/vaults@2021-06-01-preview' = {
   name: name

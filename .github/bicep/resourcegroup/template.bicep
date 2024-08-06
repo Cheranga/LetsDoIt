@@ -11,3 +11,5 @@ resource newRg 'Microsoft.Resources/resourceGroups@2024-03-01' = {
   name: name
   location: location
 }
+
+output rgLocation string = newRg.location

@@ -38,8 +38,7 @@ module storageAccount 'storageaccount/template.bicep' = {
   name: '${version}-sg'
   scope: resourceGroup(rgName)
   params: {
-    name: sgName
-    location: location
+    name: sgName    
     queues: 'inputs'
     blobContainers: 'input'
     storageType: envType[environment]
@@ -55,7 +54,6 @@ module appInsights 'appinsights/template.bicep' = {
   scope: resourceGroup(rgName)
   params: {
     name: appInsName
-    location: location
   }
   dependsOn: [
     rg
@@ -67,7 +65,6 @@ module appServicePlan 'appserviceplan/template.bicep' = {
   scope: resourceGroup(rgName)
   params: {
     name: aspName
-    location: location
     category: envType[environment]
   }
   dependsOn: [
@@ -80,7 +77,6 @@ module keyVault 'keyvault/template.bicep' = {
   scope: resourceGroup(rgName)
   params: {
     name: kvName
-    location: location
   }
   dependsOn: [
     rg
@@ -93,7 +89,6 @@ module app 'functionapp/template.bicep' = {
   params: {
     appName: funcAppName
     aspName: aspName
-    location: location
   }
   dependsOn: [
     appServicePlan

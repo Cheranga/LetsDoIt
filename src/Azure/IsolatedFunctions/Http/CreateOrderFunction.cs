@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using IsolatedFunctions.Dto;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -21,7 +22,7 @@ public class CreateOrderFunction(ILogger<CreateOrderFunction> logger)
             return await OrderAcceptedResponse.EmptyRequest(request);
         }
 
-        logger.LogInformation("Input request {@CreateOrderRequest} request received", dtoRequest);
+        logger.LogInformation("Input request {CreateOrderRequest} request received", JsonSerializer.Serialize(dtoRequest));
 
         return await OrderAcceptedResponse.Success(request, dtoRequest);
     }

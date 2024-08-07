@@ -40,7 +40,7 @@ resource storageConnectionSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' 
   name: 'storageAccountConnectionString'
   parent: kv
   properties: {
-    value: 'DefaultEndpointsProtocol=https;AccountName=${storageName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storage.id, storage.apiVersion).keys[0].value}'
+    value: 'DefaultEndpointsProtocol=https;AccountName=${storageName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storage.listKeys().keys[0].value}'
   }
 }
 

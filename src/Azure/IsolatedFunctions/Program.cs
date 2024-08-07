@@ -1,8 +1,10 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults(builder =>
@@ -16,9 +18,23 @@ var host = new HostBuilder()
             options.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         });
     })
-    .ConfigureAppConfiguration(builder =>
+    .ConfigureAppConfiguration(builder => { builder.AddUserSecrets<Program>(); })
+    .ConfigureServices(services =>
     {
-        builder.AddUserSecrets<Program>();
+        services.AddApplicationInsightsTelemetryWorkerService();
+        services.ConfigureFunctionsApplicationInsights();
+    })
+    .ConfigureLogging(builder =>
+    {
+        builder.Services.Configure<LoggerFilterOptions>(options =>
+        {
+            var defaultRule = options.Rules.FirstOrDefault(rule => string.Equals(rule.ProviderName
+                , "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider", StringComparison.OrdinalIgnoreCase));
+            if (defaultRule is not null)
+            {
+                options.Rules.Remove(defaultRule);
+            }
+        });
     })
     .Build();
 

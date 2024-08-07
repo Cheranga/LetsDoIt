@@ -21,7 +21,7 @@ public class CreateOrderFunction(ILogger<CreateOrderFunction> logger)
             return await OrderAcceptedResponse.EmptyRequest(request);
         }
 
-        logger.LogInformation("{@CreateOrderRequest} request received", dtoRequest);
+        logger.LogInformation("Input request {@CreateOrderRequest} request received", dtoRequest);
 
         return await OrderAcceptedResponse.Success(request, dtoRequest);
     }

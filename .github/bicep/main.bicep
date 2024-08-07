@@ -40,7 +40,7 @@ module storageAccount 'storageaccount/template.bicep' = {
   params: {
     name: sgName    
     queues: 'sample-work'
-    blobContainers: 'input'
+    blobContainers: 'sample-work'
     tables: 'samplework'
     storageType: envType[environment]
   }

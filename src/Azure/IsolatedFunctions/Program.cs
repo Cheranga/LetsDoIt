@@ -18,7 +18,10 @@ var host = new HostBuilder()
             options.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         });
     })
-    .ConfigureAppConfiguration(builder => { builder.AddUserSecrets<Program>(); })
+    .ConfigureAppConfiguration(builder =>
+    {
+        builder.AddUserSecrets<Program>();
+    })
     .ConfigureServices(services =>
     {
         services.AddApplicationInsightsTelemetryWorkerService();
@@ -28,8 +31,13 @@ var host = new HostBuilder()
     {
         builder.Services.Configure<LoggerFilterOptions>(options =>
         {
-            var defaultRule = options.Rules.FirstOrDefault(rule => string.Equals(rule.ProviderName
-                , "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider", StringComparison.OrdinalIgnoreCase));
+            var defaultRule = options.Rules.FirstOrDefault(rule =>
+                string.Equals(
+                    rule.ProviderName,
+                    "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider",
+                    StringComparison.OrdinalIgnoreCase
+                )
+            );
             if (defaultRule is not null)
             {
                 options.Rules.Remove(defaultRule);

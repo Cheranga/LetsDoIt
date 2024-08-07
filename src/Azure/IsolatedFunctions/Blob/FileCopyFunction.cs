@@ -5,7 +5,7 @@ namespace IsolatedFunctions.Blob;
 
 public class FileCopyFunction(ILogger<FileCopyFunction> logger)
 {
-    // [Function(nameof(FileCopyFunction))]
+    [Function(nameof(FileCopyFunction))]
     public async Task Run(
         [BlobTrigger("%Source:Container%/{name}", Connection = "SourceConnection")] Stream sourceStream,
         string name

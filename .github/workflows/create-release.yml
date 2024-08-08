@@ -1,0 +1,20 @@
+﻿name: Release
+
+on:
+  workflow_dispatch: 
+    inputs:
+      release_type:
+        description: 'Release type (major, minor, patch)'
+        required: true
+        default: 'patch'
+        
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Get the latest tag
+        id: get_latest_tag
+        uses: marcusmolchany/action-get-latest-tag@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

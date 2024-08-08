@@ -24,6 +24,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Bump version and push tag
+        id: bump
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
@@ -31,6 +32,9 @@ jobs:
           DEFAULT_BRANCH: main
           DEFAULT_BUMP: ${{ inputs.release_type }}
           REPO_OWNER: ${{ github.repository_owner }}
+          
+      - name: Print the new version
+        run: echo "New version is ${{ steps.bump.outputs.new_tag }}"
         
       
 

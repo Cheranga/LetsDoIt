@@ -28,6 +28,7 @@ jobs:
           WITH_V: true
           DEFAULT_BRANCH: main
           DEFAULT_BUMP: ${{ inputs.release_type }}
+          REPO_OWNER: ${{ github.repository_owner }}
         
       
 

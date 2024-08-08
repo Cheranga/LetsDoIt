@@ -37,21 +37,18 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        
-      - name: Upload deployment templates
-        uses: actions/upload-artifact@v3
-        with:
-          name: deploy
-          path: ./.github/bicep
-          if-no-files-found: error
-          
+      
       - name: Download deployment artifacts
         uses: actions/download-artifact@v3
         with:
           name: deploy
           path: deploy
+          
+      - name: Download Application Binaries
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.versionNumber }}
+          path: ${{ inputs.versionNumber }}
           
       - name: Login to Azure
         uses: azure/login@v1
@@ -64,7 +61,7 @@ jobs:
           failOnStdErr: false
           deploymentName: ${{ env.ARTIFACT_NAME }}
           scope: subscription
-          region: australiasoutheast
+          region: ${{ inputs.location }}
           subscriptionId: ${{ secrets.subscriptionId }}
           template: deploy/main.bicep
           parameters: >
@@ -72,3 +69,17 @@ jobs:
             version=${{ inputs.versionNumber }}
             environment=${{ inputs.environment }}
             location=${{ inputs.location }}
+            
+      - name: "Deploy Azure Function App"
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'cchat-fn-${{ inputs.applicationName }}-${{ inputs.environment }}'
+          package: ${{ inputs.versionNumber }}
+
+      - name: Logout from Azure
+        uses: Azure/CLI@v1
+        with:
+          inlineScript:
+            az logout                  
+            
+            

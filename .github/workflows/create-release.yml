@@ -36,6 +36,12 @@ jobs:
       - name: Print the new version
         run: echo "New version is ${{ steps.bump.outputs.new_tag }}"
         
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          generateReleaseNotes: true
+          tag: ${{ steps.bump.outputs.new_tag }}
+        
       
 
       

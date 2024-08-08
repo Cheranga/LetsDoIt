@@ -1,12 +1,17 @@
 ﻿name: Release
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
     inputs:
       release_type:
-        description: 'Release type (major, minor, patch)'
+        description: 'Release type'
         required: true
         default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
         
 jobs:
   release:

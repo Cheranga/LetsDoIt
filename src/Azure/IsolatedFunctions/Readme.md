@@ -196,3 +196,7 @@ To handle such scenarios, create a specific type which contains those responses.
 ## Adding Central Package Management
 
 ## Adding CI/CD
+
+* Permissions Required for ServicePrincipal
+* Environment Setup and Configuration
+* Tagging and Releasing

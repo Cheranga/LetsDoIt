@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: Checkout
+        uses: actions/checkout@v4
+      
       - name: Get the latest tag
         id: get_latest_tag
         uses: marcusmolchany/action-get-latest-tag@v1

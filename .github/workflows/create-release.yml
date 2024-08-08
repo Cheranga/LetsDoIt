@@ -20,19 +20,15 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Get the latest tag
-        id: get_latest_tag
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const latestTag = await github.repos.listTags({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              per_page: 1
-            });
-            const tag = latestTag.data[0].name;
-            console.log("Latest tag: ", tag);
-            return tag;
+        
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+          WITH_V: true
+          DEFAULT_BRANCH: main
+          DEFAULT_BUMP: ${{ inputs.release_type }}
+        
+      
+
+      

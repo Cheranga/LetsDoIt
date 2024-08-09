@@ -35,7 +35,10 @@ jobs:
       - name: Set tag output
         shell: bash
         run: |
-          echo "tag_name=${{ steps.bump.outputs.new_tag }}" >> $GITHUB_ENV          
+          echo "tag_name=${{ steps.bump.outputs.new_tag }}" >> $GITHUB_ENV
+          
+    outputs:
+      VersionNumber: ${{ steps.bump.outputs.new_tag }}          
           
 #      - name: Create Release
 #        uses: ncipollo/release-action@v1

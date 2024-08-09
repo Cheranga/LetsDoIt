@@ -25,7 +25,7 @@ jobs:
         run: echo "${{ github.event.workflow_run.outputs.VersionNumber }}"
         
       - name: Print tag from env
-        id: print_tag
+        id: print_tag_from_env
         run: echo "${{ env.TAG }}"
         
       - name: Draft release notes

@@ -1,0 +1,55 @@
+name: create_release_for_pull_request
+concurrency: create_release_for_pull_request
+
+on:
+  pull_request:
+    branches: [ 'main' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+
+      - name: Restore .NET Tools
+        run: dotnet tool restore
+
+      - name: Check C# Code Formatting
+        run: dotnet csharpier . --check
+
+      - name: Build Version Number
+        shell: bash
+        run: |
+          echo "BUILD_VERSION=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+    
+    outputs:
+      VersionNumber: ${{ env.BUILD_VERSION }}
+  
+  buildandpublish:
+    name: Build and Publish
+    needs:
+      - build
+    uses: ./.github/workflows/build-and-publish-artifacts.yml
+    with:      
+      versionNumber: ${{ needs.build.outputs.VersionNumber }}
+
+  DEV:
+    name: DEV
+    needs:
+      - build
+    uses: ./.github/workflows/deploy.yml
+    with:
+      applicationName: funky-iso
+      location: australiasoutheast
+      versionNumber: ${{ needs.build.outputs.VersionNumber }}
+      environment: dev
+    secrets:
+      credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}

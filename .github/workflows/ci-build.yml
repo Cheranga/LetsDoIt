@@ -1,13 +1,13 @@
-﻿name: "letsdoit.isolated.functions"
-concurrency: letsdoit.isolated.functions
+﻿name: isolated_functions
+concurrency: isolated_functions
 
 on:
 #  push:
 #    paths:
 #      - 'src/Azure/**'     
 #      - '.github/**'
-  pull_request:
-    branches: [ 'main' ]
+#  pull_request:
+#    branches: [ 'main' ]
   workflow_dispatch:
 
 jobs:  

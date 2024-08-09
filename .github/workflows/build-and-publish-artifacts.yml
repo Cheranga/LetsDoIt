@@ -1,0 +1,46 @@
+name: build_and_publish_artifacts
+
+on:
+  workflow_call:
+    inputs:
+      versionNumber:
+        type: string
+        required: true
+        description: Version number
+        
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4      
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x     
+            
+      - name: Restore Dependencies
+        run: dotnet restore src/Azure/IsolatedFunctions/IsolatedFunctions.csproj
+          
+      - name: Build Project
+        run: dotnet build --configuration Release --no-restore src/Azure/IsolatedFunctions/IsolatedFunctions.csproj          
+        
+      - name: Create Artifact
+        shell: bash
+        run: dotnet publish -c Release --no-build src/Azure/IsolatedFunctions/IsolatedFunctions.csproj -o ${{ inputs.versionNumber }}
+
+      - name: Publish Artifact - Function App
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.versionNumber }}
+          path: ${{ inputs.versionNumber }}/**
+          if-no-files-found: error
+
+      - name: Publish Artifact - Templates
+        uses: actions/upload-artifact@v3
+        with:
+          name: deploy
+          path: ./.github/bicep
+          if-no-files-found: error

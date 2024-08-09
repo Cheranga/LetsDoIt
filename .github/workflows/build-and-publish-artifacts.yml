@@ -24,7 +24,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v4
         with:
-          node-version: 'latest'            
+          node-version: 16            
             
       - name: Restore Dependencies
         run: dotnet restore src/Azure/IsolatedFunctions/IsolatedFunctions.csproj

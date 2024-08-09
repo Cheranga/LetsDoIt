@@ -26,7 +26,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v4
         with:
-          node-version: 'latest'
+          node-version: 16
         
       - name: Bump version and push tag
         id: bump
@@ -43,7 +43,7 @@ jobs:
         with:
           tag: ${{ steps.bump.outputs.new_tag }}
           version: ${{ steps.bump.outputs.new_tag }}
-          configName: .github/release-drafter.yml
+          config-name: .github/release-drafter.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
 

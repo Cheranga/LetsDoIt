@@ -47,23 +47,23 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
 
-      - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.bump.outputs.new_tag }}
-          release_name: ${{ steps.bump.outputs.new_tag }}
-          body: ${{ steps.generate_release_notes.outputs.body }}
-          draft: false
-          prerelease: false
-       
-          
 #      - name: Create Release
-#        uses: ncipollo/release-action@v1
+#        uses: actions/create-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #        with:
-#          generateReleaseNotes: true
-#          tag: ${{ steps.bump.outputs.new_tag }}
+#          tag_name: ${{ steps.bump.outputs.new_tag }}
+#          release_name: ${{ steps.bump.outputs.new_tag }}
+#          body: ${{ steps.generate_release_notes.outputs.body }}
+#          draft: false
+#          prerelease: false       
+          
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          generateReleaseNotes: false
+          tag: ${{ steps.bump.outputs.new_tag }}
+          body: ${{ steps.generate_release_notes.outputs.body }}
     outputs:
       VersionNumber: ${{ steps.bump.outputs.new_tag }}
 

@@ -43,13 +43,13 @@ jobs:
           node-version: 'latest'       
       
       - name: Download deployment artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: deploy
           path: deploy
           
       - name: Download Application Binaries
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.versionNumber }}
           path: ${{ inputs.versionNumber }}

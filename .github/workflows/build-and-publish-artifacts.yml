@@ -37,14 +37,14 @@ jobs:
         run: dotnet publish -c Release --no-build src/Azure/IsolatedFunctions/IsolatedFunctions.csproj -o ${{ inputs.versionNumber }}
 
       - name: Publish Artifact - Function App
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.versionNumber }}
           path: ${{ inputs.versionNumber }}/**
           if-no-files-found: error
 
       - name: Publish Artifact - Templates
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deploy
           path: ./.github/bicep

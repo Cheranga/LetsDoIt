@@ -55,6 +55,12 @@ jobs:
           draft: false
           prerelease: false
           
+      - name: Delete Draft Release
+        run: |
+          gh api -X DELETE /repos/${{ github.repository }}/releases/latest \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json"          
+          
        
           
 #      - name: Create Release

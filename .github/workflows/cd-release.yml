@@ -18,9 +18,7 @@ jobs:
     name: Tag and Release
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-    outputs:
-      tag_name: ${{ steps.bump.outputs.new_tag }}
+      contents: write    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -54,15 +52,6 @@ jobs:
           body: ${{ steps.generate_release_notes.outputs.body }}
           draft: false
           prerelease: false
-          
-      - name: Delete Draft Release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh api -X DELETE /repos/${{ github.repository }}/releases/latest \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json"          
-          
        
           
 #      - name: Create Release
@@ -70,28 +59,28 @@ jobs:
 #        with:
 #          generateReleaseNotes: true
 #          tag: ${{ steps.bump.outputs.new_tag }}
-#    outputs:
-#      VersionNumber: ${{ steps.bump.outputs.new_tag }}
-#      
-#  buildandpublish:
-#    name: Build and Publish
-#    needs:
-#      - release
-#    uses: ./.github/workflows/build-and-publish-artifacts.yml
-#    with:
-#      versionNumber: ${{ needs.release.outputs.VersionNumber }}
-#        
-#  DEV:
-#    name: DEV
-#    needs:
-#      - release
-#      - buildandpublish
-#    uses: ./.github/workflows/deploy.yml
-#    with:
-#      applicationName: funky-iso
-#      location: australiasoutheast
-#      versionNumber: ${{ needs.release.outputs.VersionNumber }}
-#      environment: dev
-#    secrets:
-#      credentials: ${{ secrets.AZURE_CREDENTIALS }}
-#      subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+    outputs:
+      VersionNumber: ${{ steps.bump.outputs.new_tag }}
+
+  buildandpublish:
+    name: Build and Publish
+    needs:
+      - release
+    uses: ./.github/workflows/build-and-publish-artifacts.yml
+    with:
+      versionNumber: ${{ needs.release.outputs.VersionNumber }}
+
+  DEV:
+    name: DEV
+    needs:
+      - release
+      - buildandpublish
+    uses: ./.github/workflows/deploy.yml
+    with:
+      applicationName: funky-iso
+      location: australiasoutheast
+      versionNumber: ${{ needs.release.outputs.VersionNumber }}
+      environment: dev
+    secrets:
+      credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}

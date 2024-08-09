@@ -42,6 +42,7 @@ jobs:
           tag_name: ${{ steps.bump.outputs.new_tag }}
           release_name: ${{ steps.bump.outputs.new_tag }}
           body: ${{ steps.release_drafter.outputs.body }}
+          generateReleaseNotes: true
           draft: false
           prerelease: false
           

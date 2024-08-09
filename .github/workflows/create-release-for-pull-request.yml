@@ -32,8 +32,8 @@ jobs:
     outputs:
       VersionNumber: ${{ env.BUILD_VERSION }}
   
-  buildandpublish:
-    name: Build and Publish
+  buildandpublish:    
+    name: Build and Publish    
     needs:
       - build
     uses: ./.github/workflows/build-and-publish-artifacts.yml
@@ -43,7 +43,7 @@ jobs:
   DEV:
     name: DEV
     needs:
-      - build
+      - buildandpublish
     uses: ./.github/workflows/deploy.yml
     with:
       applicationName: funky-iso

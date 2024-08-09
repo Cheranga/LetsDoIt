@@ -32,22 +32,22 @@ categories:
 
 template: |
   ## 🚀 New Features
-  ${{CHANGELOG:New Features}}
+  $CHANGES
 
   ## 🐞 Bug Fixes
-  ${{CHANGELOG:Bug Fixes}}
+  $CHANGES
 
   ## 🏃 Chores
-  ${{CHANGELOG:Chores}}
+  $CHANGES
 
-  ## 🧪 Tests  
-  ${{CHANGELOG:Tests}}
+  ## 🧪 Tests
+  $CHANGES
 
   ## 🎁 CI/CD
-  ${{CHANGELOG:CI/CD}}
+  $CHANGES
 
   ## ✨ Refactored
-  ${{CHANGELOG:Refactored}}
+  $CHANGES
 
   ## 📖 Documentation
-  ${{CHANGELOG:Documentation}}
+  $CHANGES

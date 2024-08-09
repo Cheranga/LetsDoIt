@@ -15,4 +15,4 @@ jobs:
         uses: actions/checkout@v4
         
       - name: CI Validations        
-        uses: ./ci-validation-checks.yml
+        uses: ./.github/workflows/ci-validation-checks.yml

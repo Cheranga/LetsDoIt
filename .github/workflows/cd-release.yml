@@ -33,13 +33,6 @@ jobs:
           WITH_V: true
           DEFAULT_BRANCH: main
           DEFAULT_BUMP: ${{ inputs.release_type }}
-          
-      - name: Draft release notes
-        uses: release-drafter/release-drafter@v6
-        with:
-          version: ${{ steps.bump.outputs.new_tag }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
         uses: actions/create-release@v1
@@ -47,7 +40,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.bump.outputs.new_tag }}
-          release_name: Release ${{ steps.bump.outputs.new_tag }}
+          release_name: ${{ steps.bump.outputs.new_tag }}
           body: ${{ steps.release_drafter.outputs.body }}
           draft: false
           prerelease: false

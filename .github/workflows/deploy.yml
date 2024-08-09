@@ -37,10 +37,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
-      - name: Install Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'latest'       
+#      - name: Install Node
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: 'latest'       
       
       - name: Download deployment artifacts
         uses: actions/download-artifact@v4

@@ -1,48 +1,48 @@
-name: Publish Release
-
-on:
-  workflow_run:
-    workflows: ["Create Release"]  # The name of your release workflow
-    types:
-      - completed
-
-jobs:
-  publish:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Get the latest tag
-        id: get_tag
-        run: echo "TAG=${{ github.event.workflow_run.outputs.release.tag_name }}" >> $GITHUB_ENV
-
-      - name: Print tag
-        id: print_tag
-        run: echo "${{ github.event.workflow_run.outputs.release.tag_name }}"
-        
-      - name: Print tag from env
-        id: print_tag_from_env
-        run: echo "${{ env.TAG }}"
-        
-      - name: Draft release notes
-        uses: release-drafter/release-drafter@v6
-        with:
-          version: ${{ env.TAG }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
-
-      - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.TAG }}
-          release_name: Release ${{ env.TAG }}
-          body: ${{ steps.release_drafter.outputs.body }}
-          draft: false
-          prerelease: false
+#name: Publish Release
+#
+#on:
+#  workflow_run:
+#    workflows: ["Create Release"]  # The name of your release workflow
+#    types:
+#      - completed
+#
+#jobs:
+#  publish:
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+#      
+#    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#        
+#      - name: Get the latest tag
+#        id: get_tag
+#        run: echo "TAG=${{ github.event.workflow_run.outputs.release.tag_name }}" >> $GITHUB_ENV
+#
+#      - name: Print tag
+#        id: print_tag
+#        run: echo "${{ github.event.workflow_run.outputs.release.tag_name }}"
+#        
+#      - name: Print tag from env
+#        id: print_tag_from_env
+#        run: echo "${{ env.TAG }}"
+#        
+#      - name: Draft release notes
+#        uses: release-drafter/release-drafter@v6
+#        with:
+#          version: ${{ env.TAG }}
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
+#
+#      - name: Create Release
+#        uses: actions/create-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{ env.TAG }}
+#          release_name: Release ${{ env.TAG }}
+#          body: ${{ steps.release_drafter.outputs.body }}
+#          draft: false
+#          prerelease: false

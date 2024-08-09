@@ -43,6 +43,7 @@ jobs:
   DEV:
     name: DEV
     needs:
+      - build
       - buildandpublish
     uses: ./.github/workflows/deploy.yml
     with:

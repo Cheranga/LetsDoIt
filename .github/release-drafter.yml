@@ -3,54 +3,53 @@ categories:
     labels:
       - 'feature'
       - 'enhancement'
-      
+    changelog: |
+      ## 🚀 New Features
+      $CHANGES
+
   - title: '🐞 Bug Fixes'
     labels:
       - 'bug'
       - 'fix'
+    changelog: |
+      ## 🐞 Bug Fixes
+      $CHANGES
+
   - title: '🏃 Chores'
     labels:
       - 'chore'
       - 'cleanup'
-        
+    changelog: |
+      ## 🏃 Chores
+      $CHANGES
+
   - title: '🧪 Tests'
     labels:
-      - 'tests'        
+      - 'tests'
+    changelog: |
+      ## 🧪 Tests  
+      $CHANGES
 
   - title: '🎁 CI/CD'
     labels:
       - 'cicd'
+    changelog: |
+      ## 🎁 CI/CD
+      $CHANGES
 
   - title: '✨ Refactored'
     labels:
       - 'refactor'
-      
+    changelog: |
+      ## ✨ Refactored
+      $CHANGES
+
   - title: '📖 Documentation'
     labels:
-      - 'docs'      
-        
+      - 'docs'
+    changelog: |
+      ## 📖 Documentation
+      $CHANGES
+
 template: |
-  ## 🚀 New Features
-  $CHANGES
-
-  ## 🐞 Bug Fixes
-  $CHANGES
-
-  ## 🏃 Chores
-  $CHANGES
-
-  ## 🧪 Tests  
-  $CHANGES
-
-  ## 🎁 CI/CD
-  $CHANGES  
-
-  ## ✨ Refactored
-  $CHANGES
-
-  ## 📖 Documentation
-  $CHANGES  
-
-  ## 👥 Contributors
-  Thanks to the following people who contributed to this release:
-  $CONTRIBUTORS
+  $CATEGORY_CONTENTS

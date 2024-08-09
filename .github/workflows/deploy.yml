@@ -55,12 +55,12 @@ jobs:
           path: ${{ inputs.versionNumber }}
           
       - name: Login to Azure
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           creds: ${{ secrets.credentials }}
           
       - name: Provision Azure Resources
-        uses: azure/arm-deploy@v1
+        uses: azure/arm-deploy@v2
         with:
           failOnStdErr: false
           deploymentName: ${{ env.ARTIFACT_NAME }}
@@ -81,7 +81,7 @@ jobs:
           package: ${{ inputs.versionNumber }}
 
       - name: Logout from Azure
-        uses: Azure/CLI@v1
+        uses: azure/cli@v2
         with:
           inlineScript:
             az logout                  

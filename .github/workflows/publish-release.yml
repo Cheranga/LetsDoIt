@@ -15,15 +15,25 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        
+      - name: Get the latest tag
+        id: get_tag
+        run: echo "TAG=${{ github.event.workflow_run.outputs.tag_name }}" >> $GITHUB_ENV
+        
+      - name: Draft release notes
+        uses: release-drafter/release-drafter@v6
+        with:
+          version: ${{ env.TAG }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
 
       - name: Create Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.workflow_run.head_branch }}
-          release_name: Release ${{ github.event.workflow_run.head_branch }}
-          body: |
-            Automatically generated release for version ${{ github.event.workflow_run.head_branch }}.
+          tag_name: ${{ env.TAG }}
+          release_name: Release ${{ env.TAG }}
+          body: ${{ steps.release_drafter.outputs.body }}
           draft: false
           prerelease: false

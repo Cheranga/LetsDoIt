@@ -33,7 +33,9 @@ jobs:
           DEFAULT_BUMP: ${{ inputs.release_type }}
           
       - name: Set tag output
-        run: echo "tag_name=${{ steps.bump.outputs.new_tag }}" >> $GITHUB_ENV          
+        shell: bash
+        run: |
+          echo "tag_name=${{ steps.bump.outputs.new_tag }}" >> $GITHUB_ENV          
           
 #      - name: Create Release
 #        uses: ncipollo/release-action@v1

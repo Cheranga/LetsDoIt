@@ -19,7 +19,7 @@ categories:
 
   - title: '🎁 CI/CD'
     labels:
-      - 'tests'
+      - 'cicd'
 
   - title: '✨ Refactored'
     labels:
@@ -31,31 +31,24 @@ categories:
         
 template: |
   ## 🚀 New Features
-
   $CHANGES
 
   ## 🐞 Bug Fixes
-
   $CHANGES
 
   ## 🏃 Chores
-
   $CHANGES
   
-  ## 🧪 Tests
-  
+  ## 🧪 Tests  
   $CHANGES
   
   ## 🎁 CI/CD
-
   $CHANGES  
 
   ## ✨ Refactored
-
   $CHANGES
   
   ## 📖 Documentation
-
   $CHANGES  
 
   ## 👥 Contributors

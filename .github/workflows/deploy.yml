@@ -40,7 +40,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v4
         with:
-          node-version: lts       
+          node-version: 'lts'       
       
       - name: Download deployment artifacts
         uses: actions/download-artifact@v3

@@ -31,23 +31,9 @@ categories:
       - 'docs'
 
 template: |
-  ## 🚀 New Features
-  $CHANGES
-
-  ## 🐞 Bug Fixes
-  $CHANGES
-
-  ## 🏃 Chores
-  $CHANGES
-
-  ## 🧪 Tests
-  $CHANGES
-
-  ## 🎁 CI/CD
-  $CHANGES
-
-  ## ✨ Refactored
-  $CHANGES
-
-  ## 📖 Documentation
-  $CHANGES
+  {% for category in categories %}
+  {% if category.pull_requests | length > 0 %}
+  ## {{ category.title }}
+  {{ category.pull_requests | join('\n') }}
+  {% endif %}
+  {% endfor %}

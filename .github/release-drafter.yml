@@ -1,3 +1,5 @@
+name-template: 'v$NEXT_PATCH_VERSION'
+tag-template: 'v$NEXT_PATCH_VERSION'
 categories:
   - title: '🚀 New Features'
     labels:
@@ -30,10 +32,9 @@ categories:
     labels:
       - 'docs'
 
+change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
+no-changes-template: '* No changes in this release.'
 template: |
-  {% for category in categories %}
-  {% if category.pull_requests | length > 0 %}
-  ## {{ category.title }}
-  {{ category.pull_requests | join('\n') }}
-  {% endif %}
-  {% endfor %}
+  ## What's Changed
+
+  $CHANGES

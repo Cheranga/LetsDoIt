@@ -1,0 +1,61 @@
+﻿name: "Create Release"
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        
+jobs:
+  release:
+    name: Tag and Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Bump version and push tag
+        id: bump
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BRANCH: main
+          DEFAULT_BUMP: ${{ inputs.release_type }}
+          
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          generateReleaseNotes: true
+          tag: ${{ steps.bump.outputs.new_tag }}
+    outputs:
+      VersionNumber: ${{ steps.bump.outputs.new_tag }}
+      
+  buildandpublish:
+    name: Build and Publish
+    needs:
+      - release
+    uses: ./.github/workflows/build-and-publish-artifacts.yml
+    with:
+      versionNumber: ${{ needs.release.outputs.VersionNumber }}
+        
+  DEV:
+    name: DEV
+    needs:
+      - release
+      - buildandpublish
+    uses: ./.github/workflows/deploy.yml
+    with:
+      applicationName: funky-iso
+      location: australiasoutheast
+      versionNumber: ${{ needs.release.outputs.VersionNumber }}
+      environment: dev
+    secrets:
+      credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}

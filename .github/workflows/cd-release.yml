@@ -32,33 +32,33 @@ jobs:
           DEFAULT_BRANCH: main
           DEFAULT_BUMP: ${{ inputs.release_type }}
           
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          generateReleaseNotes: true
-          tag: ${{ steps.bump.outputs.new_tag }}
-    outputs:
-      VersionNumber: ${{ steps.bump.outputs.new_tag }}
-      
-  buildandpublish:
-    name: Build and Publish
-    needs:
-      - release
-    uses: ./.github/workflows/build-and-publish-artifacts.yml
-    with:
-      versionNumber: ${{ needs.release.outputs.VersionNumber }}
-        
-  DEV:
-    name: DEV
-    needs:
-      - release
-      - buildandpublish
-    uses: ./.github/workflows/deploy.yml
-    with:
-      applicationName: funky-iso
-      location: australiasoutheast
-      versionNumber: ${{ needs.release.outputs.VersionNumber }}
-      environment: dev
-    secrets:
-      credentials: ${{ secrets.AZURE_CREDENTIALS }}
-      subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+#      - name: Create Release
+#        uses: ncipollo/release-action@v1
+#        with:
+#          generateReleaseNotes: true
+#          tag: ${{ steps.bump.outputs.new_tag }}
+#    outputs:
+#      VersionNumber: ${{ steps.bump.outputs.new_tag }}
+#      
+#  buildandpublish:
+#    name: Build and Publish
+#    needs:
+#      - release
+#    uses: ./.github/workflows/build-and-publish-artifacts.yml
+#    with:
+#      versionNumber: ${{ needs.release.outputs.VersionNumber }}
+#        
+#  DEV:
+#    name: DEV
+#    needs:
+#      - release
+#      - buildandpublish
+#    uses: ./.github/workflows/deploy.yml
+#    with:
+#      applicationName: funky-iso
+#      location: australiasoutheast
+#      versionNumber: ${{ needs.release.outputs.VersionNumber }}
+#      environment: dev
+#    secrets:
+#      credentials: ${{ secrets.AZURE_CREDENTIALS }}
+#      subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}

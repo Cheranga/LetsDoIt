@@ -29,29 +29,28 @@ categories:
     labels:
       - 'docs'      
         
-#template: |
-#  ## 🚀 New Features
-#  $CHANGES
-#
-#  ## 🐞 Bug Fixes
-#  $CHANGES
-#
-#  ## 🏃 Chores
-#  $CHANGES
-#  
-#  ## 🧪 Tests  
-#  $CHANGES
-#  
-#  ## 🎁 CI/CD
-#  $CHANGES  
-#
-#  ## ✨ Refactored
-#  $CHANGES
-#  
-#  ## 📖 Documentation
-#  $CHANGES  
-#
-#  ## 👥 Contributors
-#  Thanks to the following people who contributed to this release:
-#  $CONTRIBUTORS
-#        
+template: |
+  ## 🚀 New Features
+  $CHANGES
+
+  ## 🐞 Bug Fixes
+  $CHANGES
+
+  ## 🏃 Chores
+  $CHANGES
+
+  ## 🧪 Tests  
+  $CHANGES
+
+  ## 🎁 CI/CD
+  $CHANGES  
+
+  ## ✨ Refactored
+  $CHANGES
+
+  ## 📖 Documentation
+  $CHANGES  
+
+  ## 👥 Contributors
+  Thanks to the following people who contributed to this release:
+  $CONTRIBUTORS

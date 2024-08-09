@@ -7,6 +7,7 @@ on:
 
 jobs:
   generateversionnumber:
+    name: Generate Version Number
     runs-on: ubuntu-latest
     steps:
       - name: Build Version Number

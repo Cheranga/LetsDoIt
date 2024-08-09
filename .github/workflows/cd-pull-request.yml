@@ -6,24 +6,9 @@ on:
     branches: [ 'main' ]
 
 jobs:
-  build:
+  generateversionnumber:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: |
-            8.0.x
-
-      - name: Restore .NET Tools
-        run: dotnet tool restore
-
-      - name: Check C# Code Formatting
-        run: dotnet csharpier . --check
-
       - name: Build Version Number
         shell: bash
         run: |
@@ -35,21 +20,21 @@ jobs:
   buildandpublish:    
     name: Build and Publish    
     needs:
-      - build
+      - generateversionnumber
     uses: ./.github/workflows/build-and-publish-artifacts.yml
     with:      
-      versionNumber: ${{ needs.build.outputs.VersionNumber }}
+      versionNumber: ${{ needs.generateversionnumber.outputs.VersionNumber }}
 
   DEV:
     name: DEV
     needs:
-      - build
+      - generateversionnumber
       - buildandpublish
     uses: ./.github/workflows/deploy.yml
     with:
       applicationName: funky-iso
       location: australiasoutheast
-      versionNumber: ${{ needs.build.outputs.VersionNumber }}
+      versionNumber: ${{ needs.generateversionnumber.outputs.VersionNumber }}
       environment: dev
     secrets:
       credentials: ${{ secrets.AZURE_CREDENTIALS }}

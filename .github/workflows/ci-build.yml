@@ -2,75 +2,14 @@
 concurrency: isolated_functions
 
 on:
-#  push:
-#    paths:
-#      - 'src/Azure/**'     
-#      - '.github/**'
-#  pull_request:
-#    branches: [ 'main' ]
-  workflow_dispatch:
+  push:
+    paths:
+      - 'src/**'     
+      - '.github/**'
 
 jobs:  
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4      
-        
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: |
-            8.0.x
-            
-      - name: Restore .NET Tools        
-        run: dotnet tool restore
-        
-      - name: Check C# Code Formatting
-        run: dotnet csharpier . --check
-        
-      - name: Restore Dependencies
-        run: dotnet restore src/Azure/IsolatedFunctions/IsolatedFunctions.csproj
-        
-      - name: Build Project
-        run: dotnet build --configuration Release --no-restore src/Azure/IsolatedFunctions/IsolatedFunctions.csproj
-        
-      - name: Build Version Number
-        shell: bash
-        run: |
-          echo "BUILD_VERSION=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
-          
-      - name: Create Artifact
-        shell: bash
-        run: dotnet publish -c Release --no-build src/Azure/IsolatedFunctions/IsolatedFunctions.csproj -o ${{ env.BUILD_VERSION }}
-        
-      - name: Publish Artifact - Function App
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ env.BUILD_VERSION }}
-          path: ${{ env.BUILD_VERSION }}/**
-          if-no-files-found: error
-
-      - name: Publish Artifact - Templates
-        uses: actions/upload-artifact@v3
-        with:
-          name: deploy
-          path: ./.github/bicep
-          if-no-files-found: error
-    
-    outputs:
-      VersionNumber: ${{ env.BUILD_VERSION }}
-
-  DEV:
-    name: DEV
-    needs: 
-      - build
-    uses: ./.github/workflows/deploy.yml
-    with:
-      applicationName: funky-iso
-      location: australiasoutheast
-      versionNumber: ${{ needs.build.outputs.VersionNumber }}
-      environment: dev
-    secrets: 
-      credentials: ${{ secrets.AZURE_CREDENTIALS }}
-      subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+      - name: CI Validations        
+        uses: ./.github/workflows/ci-validation-checks.yml

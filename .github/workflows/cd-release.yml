@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      tag_name: ${{ steps.bump.outputs.new_tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,12 +35,9 @@ jobs:
           DEFAULT_BUMP: ${{ inputs.release_type }}
           
       - name: Set tag output
-        shell: bash
-        run: |
-          echo "tag_name=${{ steps.bump.outputs.new_tag }}" >> $GITHUB_ENV
+        run: echo "tag_name=${{ steps.bump.outputs.new_tag }}" >> $GITHUB_ENV
           
-    outputs:
-      VersionNumber: ${{ steps.bump.outputs.new_tag }}          
+       
           
 #      - name: Create Release
 #        uses: ncipollo/release-action@v1

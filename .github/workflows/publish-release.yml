@@ -18,11 +18,11 @@ jobs:
         
       - name: Get the latest tag
         id: get_tag
-        run: echo "TAG=${{ github.event.workflow_run.outputs.VersionNumber }}" >> $GITHUB_ENV
+        run: echo "TAG=${{ github.event.workflow_run.outputs.tag_name }}" >> $GITHUB_ENV
 
       - name: Print tag
         id: print_tag
-        run: echo "${{ github.event.workflow_run.outputs.VersionNumber }}"
+        run: echo "${{ github.event.workflow_run.outputs.tag_name }}"
         
       - name: Print tag from env
         id: print_tag_from_env

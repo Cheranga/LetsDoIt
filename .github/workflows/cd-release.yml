@@ -23,11 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
-#      - name: Install Node
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: 'latest'
-        
       - name: Bump version and push tag
         id: bump
         uses: anothrNick/github-tag-action@v1
@@ -47,17 +42,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
 
-#      - name: Create Release
-#        uses: actions/create-release@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          tag_name: ${{ steps.bump.outputs.new_tag }}
-#          release_name: ${{ steps.bump.outputs.new_tag }}
-#          body: ${{ steps.generate_release_notes.outputs.body }}
-#          draft: false
-#          prerelease: false       
-          
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
@@ -67,7 +51,7 @@ jobs:
     outputs:
       VersionNumber: ${{ steps.bump.outputs.new_tag }}
 
-  buildandpublish:
+  build_and_publish:
     name: Build and Publish
     needs:
       - release
@@ -79,7 +63,7 @@ jobs:
     name: DEV
     needs:
       - release
-      - buildandpublish
+      - build_and_publish
     uses: ./.github/workflows/deploy.yml
     with:
       applicationName: funky-iso

@@ -6,7 +6,7 @@ on:
     branches: [ 'main' ]
 
 jobs:
-  generateversionnumber:
+  generate_version_number:
     name: Generate Version Number
     runs-on: ubuntu-latest
     steps:
@@ -18,24 +18,24 @@ jobs:
     outputs:
       VersionNumber: ${{ env.BUILD_VERSION }}
   
-  buildandpublish:    
+  build_and_publish:    
     name: Build and Publish    
     needs:
-      - generateversionnumber
+      - generate_version_number
     uses: ./.github/workflows/build-and-publish-artifacts.yml
     with:      
-      versionNumber: ${{ needs.generateversionnumber.outputs.VersionNumber }}
+      versionNumber: ${{ needs.generate_version_number.outputs.VersionNumber }}
 
   DEV:
     name: DEV
     needs:
-      - generateversionnumber
-      - buildandpublish
+      - generate_version_number
+      - build_and_publish
     uses: ./.github/workflows/deploy.yml
     with:
       applicationName: funky-iso
       location: australiasoutheast
-      versionNumber: ${{ needs.generateversionnumber.outputs.VersionNumber }}
+      versionNumber: ${{ needs.generate_version_number.outputs.VersionNumber }}
       environment: dev
     secrets:
       credentials: ${{ secrets.AZURE_CREDENTIALS }}

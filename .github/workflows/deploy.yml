@@ -1,4 +1,4 @@
-name: provisionresources
+name: Provision Resources
 
 on:
   workflow_call:

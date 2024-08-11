@@ -1,4 +1,7 @@
 <Project>
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="AsyncFixer" Version="1.6.0"/>            
         <PackageReference Include="Meziantou.Analyzer" Version="2.0.163"/>            

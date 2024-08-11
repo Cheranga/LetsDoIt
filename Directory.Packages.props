@@ -3,22 +3,22 @@
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="AsyncFixer" Version="1.6.0"/>            
-        <PackageReference Include="Meziantou.Analyzer" Version="2.0.163"/>            
-        <PackageReference Include="Roslynator.Analyzers" Version="4.12.4"/>
-        <PackageReference Include="SonarAnalyzer.CSharp" Version="9.31.0.96804"/>
-        <PackageReference Include="CSharpier.MSBuild" Version="0.28.2"/>
+        <PackageVersion Include="AsyncFixer" Version="1.6.0"/>            
+        <PackageVersion Include="Meziantou.Analyzer" Version="2.0.163"/>            
+        <PackageVersion Include="Roslynator.Analyzers" Version="4.12.4"/>
+        <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.31.0.96804"/>
+        <PackageVersion Include="CSharpier.MSBuild" Version="0.28.2"/>
     </ItemGroup>
 
     <ItemGroup Condition="'$(IsFunctionApp)' == true">
-        <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.22.0" />
-        <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
-        <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs" Version="6.6.0" />
-        <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues" Version="5.5.0" />
-        <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Tables" Version="1.4.1" />
-        <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.17.4" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
-        <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
-        <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.2.0" />
+        <PackageVersion Include="Microsoft.Azure.Functions.Worker" Version="1.22.0" />
+        <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
+        <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs" Version="6.6.0" />
+        <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues" Version="5.5.0" />
+        <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.Tables" Version="1.4.1" />
+        <PackageVersion Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.17.4" />
+        <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
+        <PackageVersion Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
+        <PackageVersion Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.2.0" />
     </ItemGroup>
 </Project>

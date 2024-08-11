@@ -26,6 +26,6 @@ jobs:
         run: dotnet restore src/Azure/IsolatedFunctions/IsolatedFunctions.csproj
 
       - name: Build Project
-        run: dotnet build --configuration Release /p:IsFunctionApp=true --no-restore src/Azure/IsolatedFunctions/IsolatedFunctions.csproj
+        run: dotnet build --configuration Release --no-restore src/Azure/IsolatedFunctions/IsolatedFunctions.csproj
           
       # TODO: Add tests

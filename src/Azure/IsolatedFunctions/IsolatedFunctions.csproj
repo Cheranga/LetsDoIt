@@ -8,7 +8,9 @@
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <UserSecretsId>058e57a5-50cd-4f1c-ab3a-f654df2a8188</UserSecretsId>
+    </PropertyGroup>
+    <ItemGroup>
         <IsFunctionApp>true</IsFunctionApp>
-    </PropertyGroup>    
+    </ItemGroup>
 
 </Project>

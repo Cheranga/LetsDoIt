@@ -87,6 +87,19 @@ public class CreateOrderFunction(ILogger<CreateOrderFunction> logger)
 }
 ```
 
+## Doing many related actions as part of the request
+
+An API call will do some processing and will return an HTTP response.
+In Azure functions integrating with some Azure services has been made by output bindings.
+
+There are few ways you could do this.
+
+### MultiResponse Type
+This is a class which contains the HTTP response along with the other output bindings.
+
+### Attribute based Functions
+
+
 
 ## Running the project locally
 
@@ -178,13 +191,6 @@ public class ReadOrderFunction(ILogger<ReadOrderFunction> logger)
 }
 ```
 
-## Multiple Responses
-
-Sometimes we would like to do more than one thing which is related to the functionality.
-An example of this would be returning a successful HTTP response, while publishing a message to the queue.
-
-To handle such scenarios, create a specific type which contains those responses.
-
 ## Disabling a Function
 
 * You can disable any function using configuration as below
@@ -195,8 +201,125 @@ To handle such scenarios, create a specific type which contains those responses.
 
 ## Adding Central Package Management
 
-## Adding CI/CD
+## CI/CD
+
+### CI (Continuous Integration)
+
+Whenever the code is pushed perform a set of actions which validates the integrity and the quality of the code.
+How you would like to validate the integrity and quality is dependent on the company or team you are working with.
+
+#### What can trigger CI activities
+Mostly CI activities should be triggered when,
+
+* When a remote branch is created
+* When a PR is created
+* When the code is merged to `main` branch
+
+There could be other scenarios depending on your team, but the idea of CI is to maintain the quality and integrity of
+your solution.
+
+#### What are CI activities?
+Commonly these actions are performed as CI activities.
+
+* Build and Restore
+* Running Tests
+
+You could perform some additional activities depending on your needs,
+
+* Check code quality using tools like SonarQube
+* Check for code formatting
+* Check for potential security vulnerabilities
+* Etc...
+
+What can these actions be?
 
 * Permissions Required for ServicePrincipal
 * Environment Setup and Configuration
 * Tagging and Releasing
+  * Handing PRs
+  * Handling Releases
+
+### Permissions Required for ServicePrincipal
+
+Provisioning Azure resources are done using a Service Principal.
+A service principal is credentials with certain authorized permissions.
+Each service principal can be different depending on what resources it needs to provision.
+
+In our application we need a service principal who needs permission to perform the below actions in Azure
+
+* To create a resource group
+* To provision resources in that resource group
+* To assign RBAC to resources
+
+There are inbuilt roles in Azure, with preconfigured permissions associated with them.
+
+* To create a resource group
+  * To create resource groups the SP requires `Contributor` access at the subscription level
+  
+* To provision resources in that resource group
+  * `Contributor` is able to create resources within a resource group
+  
+* To assign RBAC to resources
+  * The SP requires `User Access Administrator` access at the subscription level or at the resource group level
+  * Since we are planning to create the resource group as part of the deployment this needs to be at the subscription
+  level
+
+So in summary the SP will need to have `Contributor` and `User Access Administrator` roles assigned to it.
+
+### Creating a Service Principal
+
+Let's use Azure CLI to create a service principal
+
+Use a command prompt opened as an administrator.
+
+* Login to Azure
+
+```shell
+az login
+```
+
+This will open a browser for you to login to Azure
+
+* Create a service principal
+
+```shell
+az ad sp create-for-rbac --name "[service principal name]" --role Contributor --scopes /subscriptions/[subscription id]
+```
+This will create a SP with the name you have provided, and it will assign the `Contributor` role for specified 
+subscription id.
+
+This will output the below information, and it's crucial that you save these data in a secure approach.
+
+```json
+{
+  "appId": "[application id]",
+  "displayName": "[display name]",
+  "password": "[client secret]",
+  "tenant": "[tenant id]"
+}
+```
+
+* Assigning roles
+
+```shell
+az role assignment create --assignee "[APP ID]" --role "User Access Administrator" --scope /subscriptions/[SUBSCRIPTION ID]
+```
+
+In our case we need the `User Access Administrator` role assigned to our service principal as well. This role is 
+assigned at the subscription level.
+
+But you can assign roles in the resource group level as well.
+
+* Verify if roles are assigned correctly
+
+```shell
+az role assignment list --assignee "[APP ID]" --output table
+```
+
+This will show the assigned roles output as a table
+
+* Optional: You would like to reset the secret
+
+```shell
+az ad sp credential reset --id "[APP ID]"
+```

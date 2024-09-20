@@ -1,4 +1,4 @@
-name: build_and_publish_artifacts
+name: Build and Publish Artifacts
 
 on:
   workflow_call:
@@ -10,6 +10,7 @@ on:
         
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

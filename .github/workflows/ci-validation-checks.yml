@@ -21,3 +21,11 @@ jobs:
 
       - name: Check C# Code Formatting
         run: dotnet csharpier . --check
+        
+      - name: Restore Dependencies
+        run: dotnet restore src/Azure/IsolatedFunctions/IsolatedFunctions.csproj
+
+      - name: Build Project
+        run: dotnet build --configuration Release --no-restore src/Azure/IsolatedFunctions/IsolatedFunctions.csproj
+          
+      # TODO: Add tests

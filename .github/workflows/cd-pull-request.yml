@@ -1,5 +1,5 @@
-name: create_release_for_pull_request
-concurrency: create_release_for_pull_request
+name: Create Release for PR
+concurrency: Create Release for PR
 
 on:
   pull_request:

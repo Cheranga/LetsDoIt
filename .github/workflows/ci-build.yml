@@ -1,5 +1,5 @@
-﻿name: isolated_functions
-concurrency: isolated_functions
+﻿name: Isolated Functions
+concurrency: Isolated Functions
 
 on:
   push:

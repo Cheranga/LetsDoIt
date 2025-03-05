@@ -28,5 +28,6 @@ jobs:
 
       - name: Build Project
         run: dotnet build --configuration Release --no-restore src/Azure/IsolatedFunctions/IsolatedFunctions.csproj
-          
-      # TODO: Add tests
+        
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal --logger "trx;LogFileName=test-results.trx" tests/Azure.IsolatedFunctions.Tests/Azure.IsolatedFunctions.Tests.csproj

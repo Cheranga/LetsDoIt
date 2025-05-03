@@ -323,3 +323,16 @@ This will show the assigned roles output as a table
 ```shell
 az ad sp credential reset --id "[APP ID]"
 ```
+
+* Need to create two separate secrets in the GitHub Environment
+  * `AZURE_CREDENTIALS` with the below values
+
+```json
+{
+  "clientId": "[APP ID]",
+  "clientSecret": "[ CLIENT SECRET]",
+  "subscriptionId": "[ SUBSCRIPTION ID ]",
+  "tenantId": "[ TENANT ID ]",
+  "authType": "SERVICE_PRINCIPAL"
+}
+```
